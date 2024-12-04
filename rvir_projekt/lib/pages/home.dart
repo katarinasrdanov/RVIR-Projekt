@@ -55,9 +55,11 @@ class _HomeState extends State<Home>{
               ),
               SizedBox(height: 20.0,),
               Container(
-                child: 
-                Image.asset("images/salad.jpg", height: 150, width: 150, fit:BoxFit.cover,),
+                margin: EdgeInsets.only(right: 20.0),
+                child: showItemsVertically(context),
               )
+              
+              
 
               
               
@@ -181,4 +183,46 @@ Widget showItemsHorizontally(){
               ),
               );
 
+}
+
+Widget showItemsVertically(context){
+  return Material(
+                elevation: 5.0,
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset("images/salad.jpg", 
+                          height: 120, 
+                          width: 120, 
+                          fit:BoxFit.cover,),
+                      SizedBox(width: 20.0,),
+                      Column(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width/2,
+                            child: Text("Mediteranian Salad", style: AppWidget.semiBoldTextFieldStyle(),),
+                          ),
+                          SizedBox(height: 5.0,),
+                          Container(
+                            width: MediaQuery.of(context).size.width/2,
+                            child: Text("Honey goat cheese", style: AppWidget.lightTextFieldStyle(),),
+                          ),
+                          SizedBox(height: 5.0,),
+                          Container(
+                            width: MediaQuery.of(context).size.width/2,
+                            child: Text("\$15", style: AppWidget.semiBoldTextFieldStyle(),),
+                          ),
+                          
+                      ],
+                    )
+
+                  ],
+                )
+                
+
+              ),
+              );
 }
