@@ -19,6 +19,7 @@ class _HomeState extends State<Home>{
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        
         margin: EdgeInsets.only(top:50.0, left: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
