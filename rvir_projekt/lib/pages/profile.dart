@@ -23,7 +23,7 @@ class _ProfileState extends State<Profile> {
                 color: Color(0Xffff5722),
                 borderRadius: BorderRadius.vertical(
                     bottom: Radius.elliptical(
-                        MediaQuery.of(context).size.width, 105.0)),
+                        MediaQuery.of(context).size.width, 90.0)),
               )),
           Center(
             child: Container(
@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Shivam Gupta",
+                    "Peter Klepec",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25.0,
@@ -82,7 +82,7 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
-                        Icon(Icons.person, color: Colors.black),
+                        Icon(Icons.person_outline, color: Colors.black),
                         SizedBox(width: 20.0),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +95,7 @@ class _ProfileState extends State<Profile> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                "Shivam Gupta",
+                                "Peter Klepec",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16.0,
@@ -123,20 +123,20 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
-                        Icon(Icons.email, color: Colors.black),
+                        Icon(Icons.phone_outlined, color: Colors.black),
                         SizedBox(width: 20.0),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Email",
+                                "Number",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                "shivam@mail.com",
+                                "069564348",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16.0,
@@ -164,13 +164,13 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
-                        Icon(Icons.description, color: Colors.black),
+                        Icon(Icons.add_home_outlined, color: Colors.black),
                         SizedBox(width: 20.0),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Terms and Conditions",
+                                "Addresses",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16.0,
@@ -198,7 +198,7 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
-                        Icon(Icons.delete, color: Colors.black),
+                        Icon(Icons.delete_outline, color: Colors.black),
                         SizedBox(width: 20.0),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +232,7 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
-                        Icon(Icons.logout, color: Colors.black),
+                        Icon(Icons.logout_outlined, color: Colors.black),
                         SizedBox(width: 20.0),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
