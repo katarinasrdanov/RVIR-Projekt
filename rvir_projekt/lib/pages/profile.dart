@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Shivam Gupta",
+                    "Peter Klepec",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25.0,
