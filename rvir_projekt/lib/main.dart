@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rvir_projekt/pages/bottomnav.dart';
 import 'package:rvir_projekt/pages/home.dart';
 import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/pages/profile.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Signup(),
+      home: BottomNav(),
     );
   }
 }

@@ -1,5 +1,6 @@
 import  'package:flutter/material.dart';
 import '../widget/widget_support.dart';
+import '../pages/details.dart';
 
 class Home extends StatefulWidget {
 
@@ -51,7 +52,7 @@ class _HomeState extends State<Home>{
               ),
               SizedBox(height: 20.0,),
               Container(
-                child: showItemsHorizontally(),
+                child: showItemsHorizontally(context),
               ),
               SizedBox(height: 20.0,),
               Container(
@@ -136,7 +137,7 @@ class _HomeState extends State<Home>{
   }
 }
 
-Widget showItemsHorizontally(){
+Widget showItemsHorizontally(context){
   return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -144,20 +145,25 @@ Widget showItemsHorizontally(){
                   Material(
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      margin: EdgeInsets.all(5),
-                      padding: EdgeInsets.all(14),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset("images/salad.jpg", height: 150, width: 150, fit: BoxFit.cover,),
-                          Text("Veggie Salad", style: AppWidget.semiBoldTextFieldStyle(),),
-                          SizedBox(height: 5.0,),
-                          Text("Fresh and healthy", style: AppWidget.lightTextFieldStyle(),),
-                          SizedBox(height: 5.0),
-                          Text("\$10", style: AppWidget.semiBoldTextFieldStyle(),)
-                      ],),
-                  )
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Details()));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(5),
+                        padding: EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset("images/salad.jpg", height: 150, width: 150, fit: BoxFit.cover,),
+                            Text("Veggie Salad", style: AppWidget.semiBoldTextFieldStyle(),),
+                            SizedBox(height: 5.0,),
+                            Text("Fresh and healthy", style: AppWidget.lightTextFieldStyle(),),
+                            SizedBox(height: 5.0),
+                            Text("\$10", style: AppWidget.semiBoldTextFieldStyle(),)
+                        ],),
+                                        ),
+                    )
                   ),
                   SizedBox(width: 15.0,),
                   Material(
