@@ -13,34 +13,39 @@ class _WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          
+        decoration: BoxDecoration(
+                          color: Colors.white
+                        ),
         //margin: EdgeInsets.only(top: 50.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Material(
-              child: Container(
-                padding: EdgeInsets.only(top: 0.45, left: 20.2, right: 20.0),
-                height: MediaQuery.of(context).size.height / 4.3,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Color(0Xffff5722),
-                  borderRadius: BorderRadius.vertical(
-                      bottom: Radius.elliptical(
-                          MediaQuery.of(context).size.width, 90.0)),
-                ),
-                child: Center(
-                  child: Text("Wallet", 
-                              style: TextStyle(color: Colors.white, fontSize: 40.0, fontFamily: "Poppins", fontWeight: FontWeight.bold),)
-                  ),
-                  
+            Container(
+              padding: EdgeInsets.only(top: 0.45, left: 20.2, right: 20.0),
+              height: MediaQuery.of(context).size.height / 4.3,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Color(0Xffff5722),
+                borderRadius: BorderRadius.vertical(
+                    bottom: Radius.elliptical(
+                        MediaQuery.of(context).size.width, 90.0)),
               ),
+              child: Center(
+                child: Text("Wallet", 
+                            style: TextStyle(color: Colors.white, fontSize: 40.0, fontFamily: "Poppins", fontWeight: FontWeight.bold),)
+                ),
+                
             ),
             SizedBox(height: 30.0,),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Colors.white),
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 255, 242, 222),
+                borderRadius: BorderRadius.circular(8),
+                ),
               child: Row(
                 children: [
                   Image.asset("images/wallet-icon.png", 
@@ -103,7 +108,7 @@ Widget addMoneyContainer(money){
   return Container(
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 255, 242, 222),
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(5),
                 ),

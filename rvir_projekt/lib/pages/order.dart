@@ -10,7 +10,13 @@ class Order extends StatefulWidget {
 class _OrderState extends State<Order> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+                          color: Colors.white
+                        ),
+      ),
+    );
 
   }
   

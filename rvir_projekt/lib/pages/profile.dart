@@ -12,6 +12,9 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+          decoration: BoxDecoration(
+            color: Colors.white
+          ),
             child: Column(children: [
       Stack(
         children: [
@@ -78,7 +81,7 @@ class _ProfileState extends State<Profile> {
                       horizontal: 10.0,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 255, 242, 222),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
@@ -119,7 +122,7 @@ class _ProfileState extends State<Profile> {
                       horizontal: 10.0,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 255, 242, 222),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
@@ -160,7 +163,7 @@ class _ProfileState extends State<Profile> {
                       horizontal: 10.0,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 255, 242, 222),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
@@ -194,7 +197,7 @@ class _ProfileState extends State<Profile> {
                       horizontal: 10.0,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 255, 242, 222),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
@@ -228,7 +231,7 @@ class _ProfileState extends State<Profile> {
                       horizontal: 10.0,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 255, 242, 222),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [

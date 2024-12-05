@@ -19,15 +19,17 @@ class _HomeState extends State<Home>{
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        
-        margin: EdgeInsets.only(top:50.0, left: 20.0),
+        decoration: BoxDecoration(
+                          color: Colors.white
+                        ),
+        padding: EdgeInsets.only(top:50.0, left: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-              Text("Hello Lejla", 
+              Text("Hello Lejla,", 
               style: AppWidget.boldTextFieldStyle(),
               ),
               Container(
@@ -143,9 +145,11 @@ Widget showItemsHorizontally(context){
                 scrollDirection: Axis.horizontal,
                 child: Row(
                 children: [
-                  Material(
-                    elevation: 5.0,
-                    borderRadius: BorderRadius.circular(20),
+                  Container(
+                    decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 255, 242, 222),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                     child: GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => Details()));
@@ -153,10 +157,13 @@ Widget showItemsHorizontally(context){
                       child: Container(
                         margin: EdgeInsets.all(5),
                         padding: EdgeInsets.all(14),
+                        
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset("images/salad.jpg", height: 150, width: 150, fit: BoxFit.cover,),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Image.asset("images/salad.jpg", height: 150, width: 150, fit: BoxFit.cover,)),
                             Text("Veggie Salad", style: AppWidget.semiBoldTextFieldStyle(),),
                             SizedBox(height: 5.0,),
                             Text("Fresh and healthy", style: AppWidget.lightTextFieldStyle(),),
@@ -164,27 +171,27 @@ Widget showItemsHorizontally(context){
                             Text("\$10", style: AppWidget.semiBoldTextFieldStyle(),)
                         ],),
                                         ),
-                    )
+                    ),
                   ),
                   SizedBox(width: 15.0,),
-                  Material(
-                    elevation: 5.0,
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      margin: EdgeInsets.all(4),
-                      padding: EdgeInsets.all(14),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset("images/salad.jpg", height: 150, width: 150, fit: BoxFit.cover,),
-                          Text("Mixed Salad", style: AppWidget.semiBoldTextFieldStyle(),),
-                          SizedBox(height: 5.0,),
-                          Text("Very spicy", style: AppWidget.lightTextFieldStyle(),),
-                          SizedBox(height: 5.0),
-                          Text("\$14", style: AppWidget.semiBoldTextFieldStyle(),)
-                      ],),
-                  )
-                  ),
+                  Container(
+                    margin: EdgeInsets.all(4),
+                    padding: EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 255, 242, 222),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(borderRadius: BorderRadius.circular(5),child: Image.asset("images/salad.jpg", height: 150, width: 150, fit: BoxFit.cover,)),
+                        Text("Mixed Salad", style: AppWidget.semiBoldTextFieldStyle(),),
+                        SizedBox(height: 5.0,),
+                        Text("Very spicy", style: AppWidget.lightTextFieldStyle(),),
+                        SizedBox(height: 5.0),
+                        Text("\$14", style: AppWidget.semiBoldTextFieldStyle(),)
+                    ],),
+                                    ),
                   
                 ],
               ),
@@ -193,43 +200,46 @@ Widget showItemsHorizontally(context){
 }
 
 Widget showItemsVertically(context){
-  return Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset("images/salad.jpg", 
-                          height: 120, 
-                          width: 120, 
-                          fit:BoxFit.cover,),
-                      SizedBox(width: 20.0,),
-                      Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width/2,
-                            child: Text("Mediteranian Salad", style: AppWidget.semiBoldTextFieldStyle(),),
-                          ),
-                          SizedBox(height: 5.0,),
-                          Container(
-                            width: MediaQuery.of(context).size.width/2,
-                            child: Text("Honey goat cheese", style: AppWidget.lightTextFieldStyle(),),
-                          ),
-                          SizedBox(height: 5.0,),
-                          Container(
-                            width: MediaQuery.of(context).size.width/2,
-                            child: Text("\$15", style: AppWidget.semiBoldTextFieldStyle(),),
-                          ),
-                          
-                      ],
-                    )
-
-                  ],
-                )
-                
-
-              ),
-              );
+  return Container(
+    padding: EdgeInsets.all(10),
+    decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 255, 242, 222),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Image.asset("images/salad.jpg", 
+              height: 120, 
+              width: 120, 
+              fit:BoxFit.cover,),
+        ),
+        SizedBox(width: 20.0,),
+        Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width/2,
+              child: Text("Mediteranian Salad", style: AppWidget.semiBoldTextFieldStyle(),),
+            ),
+            SizedBox(height: 5.0,),
+            Container(
+              width: MediaQuery.of(context).size.width/2,
+              child: Text("Honey goat cheese", style: AppWidget.lightTextFieldStyle(),),
+            ),
+            SizedBox(height: 5.0,),
+            Container(
+              width: MediaQuery.of(context).size.width/2,
+              child: Text("\$15", style: AppWidget.semiBoldTextFieldStyle(),),
+            ),
+            
+        ],
+      )
+  
+    ],
+  )
+  
+  
+                );
 }

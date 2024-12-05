@@ -18,7 +18,10 @@ class _DetailsState extends State<Details>{
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          margin: EdgeInsets.only(top: 50.0, left:20.0, right: 20.0),
+          decoration: BoxDecoration(
+                          color: Colors.white
+                        ),
+          padding: EdgeInsets.only(top: 50.0, left:20.0, right: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -28,10 +31,13 @@ class _DetailsState extends State<Details>{
                 },
                 child: Icon(Icons.arrow_back, color: Colors.black,),
               ),
-              Image.asset("images/salad.jpg", 
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height/2.5, 
-                            fit: BoxFit.cover,),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset("images/salad.jpg", 
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height/2.5, 
+                              fit: BoxFit.cover,),
+              ),
               SizedBox(height: 15.0,),
               
               Row(
@@ -121,12 +127,20 @@ class _DetailsState extends State<Details>{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Total Price", style: AppWidget.semiBoldTextFieldStyle(),),
-                    Text("\$15", style: AppWidget.headlineTextFieldStyle(),)
-                  ],
+                Container(
+                  padding: EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 255, 242, 222),
+                    
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Total Price", style: AppWidget.semiBoldTextFieldStyle(),),
+                      Text("\$15", style: AppWidget.headlineTextFieldStyle(),)
+                    ],
+                  ),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width/2,
