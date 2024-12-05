@@ -97,7 +97,7 @@ class _ProfileState extends State<Profile> {
                               Text(
                                 "Shivam Gupta",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600),
                               )
@@ -138,7 +138,7 @@ class _ProfileState extends State<Profile> {
                               Text(
                                 "shivam@mail.com",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600),
                               )
@@ -172,7 +172,7 @@ class _ProfileState extends State<Profile> {
                               Text(
                                 "Terms and Conditions",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600),
                               )
