@@ -14,16 +14,24 @@ class _WalletState extends State<Wallet> {
     return Scaffold(
       body: Container(
           
-        margin: EdgeInsets.only(top: 50.0),
+        //margin: EdgeInsets.only(top: 50.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Material(
               child: Container(
-                padding: EdgeInsets.only(bottom: 10.0),
+                padding: EdgeInsets.only(top: 0.45, left: 20.2, right: 20.0),
+                height: MediaQuery.of(context).size.height / 4.3,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Color(0Xffff5722),
+                  borderRadius: BorderRadius.vertical(
+                      bottom: Radius.elliptical(
+                          MediaQuery.of(context).size.width, 90.0)),
+                ),
                 child: Center(
                   child: Text("Wallet", 
-                              style: AppWidget.headlineTextFieldStyle(),)
+                              style: TextStyle(color: Colors.white, fontSize: 40.0, fontFamily: "Poppins", fontWeight: FontWeight.bold),)
                   ),
                   
               ),
