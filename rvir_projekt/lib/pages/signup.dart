@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:rvir_projekt/pages/signup.dart';
+import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 
-class LogIn extends StatefulWidget {
-  const LogIn({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<LogIn> createState() => _LogInState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _LogInState extends State<LogIn> {
+class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +70,7 @@ class _LogInState extends State<LogIn> {
                               height: 25,
                             ),
                             Text(
-                              "Login",
+                              "Sign up",
                               style: AppWidget.headlineTextFieldStyle(),
                             ),
                             SizedBox(
@@ -86,21 +86,21 @@ class _LogInState extends State<LogIn> {
                               height: 30.0,
                             ),
                             TextField(
-                              obscureText: true,
                               decoration: InputDecoration(
                                   hintText: 'Password',
                                   hintStyle: AppWidget.lightTextFieldStyle(),
                                   prefixIcon: Icon(Icons.password_outlined)),
                             ),
                             SizedBox(
-                              height: 20.0,
+                              height: 30.0,
                             ),
-                            Container(
-                                alignment: Alignment.topRight,
-                                child: Text(
-                                  "Forgot password?",
-                                  style: AppWidget.lightTextFieldStyle(),
-                                )),
+                            TextField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  hintText: 'Phone umber',
+                                  hintStyle: AppWidget.lightTextFieldStyle(),
+                                  prefixIcon: Icon(Icons.phone_outlined)),
+                            ),
                             SizedBox(
                               height: 18.0,
                             ),
@@ -115,7 +115,7 @@ class _LogInState extends State<LogIn> {
                                     borderRadius: BorderRadius.circular(20.0)),
                                 child: Center(
                                     child: Text(
-                                  "LOGIN",
+                                  "SIGN UP",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: "Poppins1",
@@ -134,9 +134,9 @@ class _LogInState extends State<LogIn> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup()));
+                            MaterialPageRoute(builder: (context) => LogIn()));
                       },
-                      child: Text("Don't have an account? Sign up!",
+                      child: Text("Already have an account? Log In!",
                           style: AppWidget.lightTextFieldStyle()),
                     )
                   ],
