@@ -89,7 +89,7 @@ class _HomeState extends State<Home>{
                       elevation: 5.0,
                       borderRadius: BorderRadius.circular(10),
                       child:Container(
-                        decoration: BoxDecoration(color: sweetFood? Colors.black : Colors.white, borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(color: sweetFood? Color(0Xffff5722) : Colors.white, borderRadius: BorderRadius.circular(10)),
                         padding: EdgeInsets.all(8),
                         child: Image.asset("images/ice-cream-icon.png", height: 40, width: 40, fit: BoxFit.cover, color: sweetFood? Colors.white : Colors.black,),
                       )
@@ -108,7 +108,7 @@ class _HomeState extends State<Home>{
                       elevation: 5.0,
                       borderRadius: BorderRadius.circular(10),
                       child:Container(
-                        decoration: BoxDecoration(color: fastFood? Colors.black : Colors.white, borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(color: fastFood? Color(0Xffff5722) : Colors.white, borderRadius: BorderRadius.circular(10)),
                         padding: EdgeInsets.all(8),
                         child: Image.asset("images/burger-icon.png", height: 40, width: 40, fit: BoxFit.cover, color: fastFood? Colors.white : Colors.black,),
                       )
@@ -127,7 +127,7 @@ class _HomeState extends State<Home>{
                       elevation: 5.0,
                       borderRadius: BorderRadius.circular(10),
                       child:Container(
-                        decoration: BoxDecoration(color: healthyFood? Colors.black : Colors.white, borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(color: healthyFood? Color(0Xffff5722) : Colors.white, borderRadius: BorderRadius.circular(10)),
                         padding: EdgeInsets.all(8),
                         child: Image.asset("images/salad-icon.png", height: 40, width: 40, fit: BoxFit.cover, color: healthyFood? Colors.white : Colors.black,),
                       )
