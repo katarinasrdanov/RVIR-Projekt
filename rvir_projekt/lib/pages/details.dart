@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 
 class Details extends StatefulWidget{
 
-  const Details({super.key});
+  final DocumentSnapshot<Object?> foodItem; // Accept foodItem as a parameter
+
+  const Details(this.foodItem, {super.key}); // Assign the passed document to the widget
 
   @override
   State<StatefulWidget> createState() => _DetailsState();
@@ -12,10 +15,14 @@ class Details extends StatefulWidget{
 
 class _DetailsState extends State<Details>{
   int numToOrder = 1;
+  
+  _DetailsState();
 
 
   @override
   Widget build(BuildContext context) {
+    final foodItem = widget.foodItem;
+
     return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -50,13 +57,13 @@ class _DetailsState extends State<Details>{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Mediteranian",
+            foodItem["name"],
             style: AppWidget.semiBoldTextFieldStyle(),
             overflow: TextOverflow.ellipsis, // Avoids text overflow
           ),
           SizedBox(height: 5.0),
           Text(
-            "Very fresh and crunchy salad.",
+            foodItem["shortDescr"],
             style: AppWidget.headlineTextFieldStyle(),
             maxLines: 2, // Limits to 2 lines to prevent overflow
             overflow: TextOverflow.ellipsis, // Trims text if it exceeds
@@ -111,7 +118,7 @@ class _DetailsState extends State<Details>{
   ],
 ),
               SizedBox(height: 20.0,),
-              Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.", style: AppWidget.lightTextFieldStyle(), maxLines: 3,),
+              Text(foodItem["longDescr"], style: AppWidget.lightTextFieldStyle(), maxLines: 3,),
               SizedBox(height: 10.0,),
               Row(
                 children: [
@@ -119,7 +126,7 @@ class _DetailsState extends State<Details>{
                   SizedBox(width: 5.0,),
                   Icon(Icons.alarm),
                   SizedBox(width: 5.0,),
-                  Text("30 min", style: AppWidget.semiBoldTextFieldStyle(),)
+                  Text(foodItem["deliveryTime"].toString()+" min", style: AppWidget.semiBoldTextFieldStyle(),)
                 ],
               ),
               Spacer(),
@@ -138,7 +145,7 @@ class _DetailsState extends State<Details>{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Total Price", style: AppWidget.semiBoldTextFieldStyle(),),
-                      Text("\$15", style: AppWidget.headlineTextFieldStyle(),)
+                      Text("\$"+foodItem["price"].toString(), style: AppWidget.headlineTextFieldStyle(),)
                     ],
                   ),
                 ),
