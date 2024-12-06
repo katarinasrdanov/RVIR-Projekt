@@ -35,49 +35,78 @@ class _DetailsState extends State<Details>{
               SizedBox(height: 15.0,),
               
               Row(
-                
-                children: [
-                Column(
-                  children: [
-                    Text("Mediteranian", style: AppWidget.semiBoldTextFieldStyle(),),
-                    Text("Very fresh and crunchy salad.", style: AppWidget.headlineTextFieldStyle(),),
-                  ],
-                ),
-                Spacer(),
-                
-                GestureDetector(
-                  onTap: (){
-                    if(numToOrder>1){
-                      --numToOrder;
-                    }
-                    
-                    setState(() {
-                      
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(8)),
-                    child: Icon(Icons.remove, color: Colors.white,),
-                  ),
-                ),
-                SizedBox(width: 20.0,),
-                Text(numToOrder.toString(), style: AppWidget.semiBoldTextFieldStyle(),),
-                SizedBox(width: 20.0,),
-                GestureDetector(
-                  onTap: (){
-                    ++numToOrder;
-                    setState(() {
-                      
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(8)),
-                    child: Icon(Icons.add, color: Colors.white,),
-                  ),
-                )
-              ],),
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    // Item details (name and description)
+    Expanded( // Ensures the text wraps or shrinks to fit available space
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Mediteranian",
+            style: AppWidget.semiBoldTextFieldStyle(),
+            overflow: TextOverflow.ellipsis, // Avoids text overflow
+          ),
+          SizedBox(height: 5.0),
+          Text(
+            "Very fresh and crunchy salad.",
+            style: AppWidget.headlineTextFieldStyle(),
+            maxLines: 2, // Limits to 2 lines to prevent overflow
+            overflow: TextOverflow.ellipsis, // Trims text if it exceeds
+          ),
+        ],
+      ),
+    ),
+    // Quantity controls
+    Row(
+      children: [
+        // Decrement button
+        GestureDetector(
+          onTap: () {
+            if (numToOrder > 1) {
+              --numToOrder;
+            }
+            setState(() {});
+          },
+          child: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.remove, color: Colors.white),
+          ),
+        ),
+        SizedBox(width: 15.0),
+        // Quantity number
+        Text(
+          numToOrder.toString(),
+          style: AppWidget.semiBoldTextFieldStyle(),
+        ),
+        SizedBox(width: 15.0),
+        // Increment button
+        GestureDetector(
+          onTap: () {
+            ++numToOrder;
+            setState(() {});
+          },
+          child: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.add, color: Colors.white),
+          ),
+        ),
+      ],
+    ),
+  ],
+),
               SizedBox(height: 20.0,),
               Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.", style: AppWidget.lightTextFieldStyle(), maxLines: 3,),
+              SizedBox(height: 10.0,),
               Row(
                 children: [
                   Text("Delivery Time", style: AppWidget.lightTextFieldStyle(),),
