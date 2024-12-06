@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/bottomnav.dart';
 import 'package:rvir_projekt/pages/login.dart';
+import 'package:rvir_projekt/service/database.dart';
+import 'package:rvir_projekt/service/shared_pref.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 
 class Signup extends StatefulWidget {
@@ -31,24 +34,35 @@ class _SignupState extends State<Signup> {
               "Registered Successfully",
               style: TextStyle(fontSize: 20.0),
             ))));
+        String Id = randomAlphaNumeric(10);
+        Map<String, dynamic> addUserInfo = {
+          "Name": nameController.text,
+          "Email": emailController.text,
+          "Id": Id,
+        };
+        await DatabaseMethods().addUserDetail(addUserInfo, Id);
+        await SharedPreferenceHelper().saveUserName(nameController.text);
+        await SharedPreferenceHelper().saveUserEmail(emailController.text);
+        await SharedPreferenceHelper().saveUserId(Id);
+
         //pushReplacement umesto push, da ne moze da se user vrati nazad na singup
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomNav()));
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar((SnackBar(
               backgroundColor: Colors.orangeAccent,
               content: Text(
                 "Password is too weak",
                 style: TextStyle(fontSize: 18.0),
-              )));
+              ))));
         } else if (e.code == 'email-already-in-use') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar((SnackBar(
               backgroundColor: Colors.orangeAccent,
               content: Text(
                 "Account already exists",
                 style: TextStyle(fontSize: 18.0),
-              )));
+              ))));
         }
       }
     }
@@ -104,7 +118,7 @@ class _SignupState extends State<Signup> {
                       child: Container(
                         padding: EdgeInsets.only(left: 20.0, right: 20.0),
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 1.7,
+                        height: MediaQuery.of(context).size.height / 1.5,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20)),
@@ -228,7 +242,7 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 60,
                     ),
                     GestureDetector(
                       onTap: () {

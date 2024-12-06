@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rvir_projekt/pages/bottomnav.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rvir_projekt/pages/signup.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-    runApp(const MyApp());
+  await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BottomNav(),
+      home: Signup(),
     );
   }
 }
