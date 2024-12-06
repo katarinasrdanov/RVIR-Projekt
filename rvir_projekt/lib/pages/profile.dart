@@ -1,9 +1,9 @@
-//import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
-//import 'package:random_string/random_string.dart';
+import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/service/shared_pref.dart';
-//import 'package:image_picker/image_picker.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -15,7 +15,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String? profile, name, email, number;
 
-  /*final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   File? selectedImage;
 
   Future getImage() async {
@@ -39,7 +39,7 @@ class _ProfileState extends State<Profile> {
       await SharedPreferenceHelper().saveUserProfile(downloadUrl);
       setState(() {});
     }
-  }*/
+  }
 
   getthesharedpref() async {
     profile = await SharedPreferenceHelper().getUserProfile();
