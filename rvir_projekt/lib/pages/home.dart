@@ -74,6 +74,7 @@ class _HomeState extends State<Home>{
                 ),
                 SizedBox(height: 20.0,),
                 Container(
+                  height: 290,
                   child: showItemsHorizontally(context, foodItemsStream),
                 ),
                 SizedBox(height: 20.0,),
@@ -163,7 +164,7 @@ class _HomeState extends State<Home>{
   }
 }
 
-Widget allItemsHorizontally(foodItemsStream) {
+Widget showItemsHorizontally(context, foodItemsStream) {
 
     return StreamBuilder(stream: foodItemsStream, builder: (context, AsyncSnapshot snapshot){
         return snapshot.hasData? ListView.builder(
@@ -211,14 +212,7 @@ Widget allItemsHorizontally(foodItemsStream) {
     });
   }
 
-Widget showItemsHorizontally(context, foodItemsStream){
-  return Container(
-    height: 290,
-    child: allItemsHorizontally(foodItemsStream)
-    );
-}
-
-Widget allItemsVertically(foodItemsStream) {
+Widget showItemsVertically(context, foodItemsStream) {
   return StreamBuilder(stream: foodItemsStream, builder: (context, AsyncSnapshot snapshot){
         return snapshot.hasData? ListView.builder(
               padding: EdgeInsets.zero,
@@ -229,47 +223,52 @@ Widget allItemsVertically(foodItemsStream) {
                 DocumentSnapshot ds = snapshot.data.docs[index];
                 return Column(
                   children: [
-                    Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                                              color: Color.fromARGB(255, 255, 242, 222),
-                                              borderRadius: BorderRadius.circular(20),
-                                            ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Image.asset("images/burger.jpg", 
-                                  height: 120, 
-                                  width: 120, 
-                                  fit:BoxFit.cover,),
-                            ),
-                            SizedBox(width: 20.0,),
-                            Column(
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width/2,
-                                  child: Text(ds["name"], style: AppWidget.semiBoldTextFieldStyle(),),
-                                ),
-                                SizedBox(height: 5.0,),
-                                Container(
-                                  width: MediaQuery.of(context).size.width/2,
-                                  child: Text(ds["shortDescr"], style: AppWidget.lightTextFieldStyle(),),
-                                ),
-                                SizedBox(height: 5.0,),
-                                Container(
-                                  width: MediaQuery.of(context).size.width/2,
-                                  child: Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),),
-                                ),
-                                
-                            ],
-                          )
-                      
-                        ],
-                      )
-                      
-                      
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Details(ds)));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                                                color: Color.fromARGB(255, 255, 242, 222),
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.asset("images/burger.jpg", 
+                                    height: 120, 
+                                    width: 120, 
+                                    fit:BoxFit.cover,),
+                              ),
+                              SizedBox(width: 20.0,),
+                              Column(
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width/2,
+                                    child: Text(ds["name"], style: AppWidget.semiBoldTextFieldStyle(),),
+                                  ),
+                                  SizedBox(height: 5.0,),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width/2,
+                                    child: Text(ds["shortDescr"], style: AppWidget.lightTextFieldStyle(),),
+                                  ),
+                                  SizedBox(height: 5.0,),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width/2,
+                                    child: Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),),
+                                  ),
+                                  
+                              ],
+                            )
+                        
+                          ],
+                        )
+                        
+                        
+                      ),
                     ),
                     SizedBox(height: 15.0,)
                   ],
@@ -277,8 +276,4 @@ Widget allItemsVertically(foodItemsStream) {
               
         }):CircularProgressIndicator();
     });
-}
-
-Widget showItemsVertically(context, foodItemsStream){
-  return allItemsVertically(foodItemsStream);
 }
