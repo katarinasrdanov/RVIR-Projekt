@@ -34,16 +34,16 @@ class _SignupState extends State<Signup> {
               "Registered Successfully",
               style: TextStyle(fontSize: 20.0),
             ))));
-        String Id = randomAlphaNumeric(10);
+        String Id = randomAlphaNumeric(12);
         Map<String, dynamic> addUserInfo = {
           "Name": nameController.text,
           "Email": emailController.text,
-          "Id": Id,
+          "Phone": phoneController.text
         };
         await DatabaseMethods().addUserDetail(addUserInfo, Id);
         await SharedPreferenceHelper().saveUserName(nameController.text);
+        await SharedPreferenceHelper().saveUserPhone(phoneController.text);
         await SharedPreferenceHelper().saveUserEmail(emailController.text);
-        await SharedPreferenceHelper().saveUserId(Id);
 
         //pushReplacement umesto push, da ne moze da se user vrati nazad na singup
         Navigator.pushReplacement(

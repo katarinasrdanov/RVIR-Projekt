@@ -1,14 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceHelper {
-  static String userIdKey = "USERKEY";
   static String userNameKey = "USERNAMEKEY";
   static String userEmailKey = "USEREMAILKEY";
-
-  Future<bool> saveUserId(String getUserId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.setString(userIdKey, getUserId);
-  }
+  static String userPhoneKey = "USERPHONEKEY";
+  
 
   Future<bool> saveUserName(String getUserName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -20,12 +16,12 @@ class SharedPreferenceHelper {
     return prefs.setString(userEmailKey, getUserEmail);
   }
 
-  //s tisto funkcijo pridobim user id kjerkoli v app zelim
-  Future<String?> getUserId() async {
+  Future<bool> saveUserPhone(String getUserPhone) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(userIdKey);
+    return prefs.setString(userPhoneKey, getUserPhone);
   }
 
+  //s tisto funkcijo pridobim ime usera kjerkoli v app zelim
   Future<String?> getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userNameKey);
@@ -34,5 +30,10 @@ class SharedPreferenceHelper {
   Future<String?> getUserEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userEmailKey);
+  }
+
+  Future<String?> getUserPhone() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(userPhoneKey);
   }
 }
