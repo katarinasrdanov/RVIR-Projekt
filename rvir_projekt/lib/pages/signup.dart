@@ -36,9 +36,9 @@ class _SignupState extends State<Signup> {
             ))));
         String Id = randomAlphaNumeric(12);
         Map<String, dynamic> addUserInfo = {
-          "Name": nameController.text,
-          "Email": emailController.text,
-          "Phone": phoneController.text
+          "name": nameController.text,
+          "email": emailController.text,
+          "phone": phoneController.text
         };
         await DatabaseMethods().addUserDetail(addUserInfo, Id);
         await SharedPreferenceHelper().saveUserName(nameController.text);
