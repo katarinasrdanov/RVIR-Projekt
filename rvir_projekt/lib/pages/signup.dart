@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/bottomnav.dart';
 import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/service/database.dart';
