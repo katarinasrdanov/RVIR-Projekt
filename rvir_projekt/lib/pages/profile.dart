@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/service/auth.dart';
 import 'package:rvir_projekt/service/shared_pref.dart';
 import 'package:image_picker/image_picker.dart';
@@ -268,6 +269,8 @@ class _ProfileState extends State<Profile> {
                     child: GestureDetector(
                       onTap: () {
                         AuthMethods().deleteUser();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => LogIn()));
                       },
                       child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -309,6 +312,8 @@ class _ProfileState extends State<Profile> {
                     child: GestureDetector(
                       onTap: () {
                         AuthMethods().SignOut();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => LogIn()));
                       },
                       child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.0),

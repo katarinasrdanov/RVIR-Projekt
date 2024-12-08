@@ -28,26 +28,37 @@ class _SignupState extends State<Signup> {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+
         ScaffoldMessenger.of(context).showSnackBar((SnackBar(
             backgroundColor: Colors.redAccent,
             content: Text(
               "Registered Successfully",
               style: TextStyle(fontSize: 20.0),
             ))));
-        String Id = randomAlphaNumeric(12);
-        Map<String, dynamic> addUserInfo = {
-          "name": nameController.text,
-          "email": emailController.text,
-          "phone": phoneController.text
-        };
-        await DatabaseMethods().addUserDetail(addUserInfo, Id);
-        await SharedPreferenceHelper().saveUserName(nameController.text);
-        await SharedPreferenceHelper().saveUserPhone(phoneController.text);
-        await SharedPreferenceHelper().saveUserEmail(emailController.text);
 
-        //pushReplacement umesto push, da ne moze da se user vrati nazad na singup
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNav()));
+        // uzmemo uid
+        User? user = userCredential.user;
+        if (user != null) {
+          String uid = user.uid;
+
+          Map<String, dynamic> addUserInfo = {
+            "name": nameController.text,
+            "email": emailController.text,
+            "phone": phoneController.text
+          };
+
+          // sad je UID umjesto generated alphaNum
+          await DatabaseMethods().addUserDetail(addUserInfo, uid);
+          await SharedPreferenceHelper().saveUserName(nameController.text);
+          await SharedPreferenceHelper().saveUserPhone(phoneController.text);
+          await SharedPreferenceHelper().saveUserEmail(emailController.text);
+
+          //pushReplacement umesto push da se ne moze vratit nazad
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => BottomNav()),
+          );
+        }
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar((SnackBar(

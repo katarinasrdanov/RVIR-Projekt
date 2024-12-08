@@ -14,7 +14,8 @@ class DatabaseMethods {
     return firestore.collection("food").snapshots();
   }
 
-  Future addUserDetail(Map<String, dynamic> userInfoMap, String id) async {
-    return await firestore.collection('users').doc(id).set(userInfoMap);
+
+  Future addUserDetail(Map<String, dynamic> userInfoMap, String uid) async {
+    return await firestore.collection('users').doc(uid).set(userInfoMap);
   }
 }
