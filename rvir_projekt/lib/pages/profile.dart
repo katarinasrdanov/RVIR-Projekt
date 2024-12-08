@@ -203,27 +203,57 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(60),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
-                              child: selectedImage == null
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        getImage();
-                                      },
-                                      child: profile == null
-                                          ? Image.asset("images/boy.jpg",
-                                              height: 120,
-                                              width: 120,
-                                              fit: BoxFit.cover)
-                                          : Image.network(
-                                              profile!,
-                                              height: 120,
-                                              width: 120,
-                                              fit: BoxFit.cover,
+                              child: GestureDetector(
+                                onTap: () {
+                                  getImage();
+                                },
+                                child: Stack(
+                                  children: [
+                                    selectedImage == null
+                                        ? profile == null
+                                            ? Image.asset(
+                                                "images/boy.jpg",
+                                                height: 120,
+                                                width: 120,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                profile!,
+                                                height: 120,
+                                                width: 120,
+                                                fit: BoxFit.cover,
+                                              )
+                                        : Image.file(
+                                            selectedImage!,
+                                            height: 120,
+                                            width: 120,
+                                            fit: BoxFit.cover,
+                                          ),
+                                    if (selectedImage == null)
+                                      Positioned(
+                                        bottom: 40,
+                                        right: 45,
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0Xffff5722),
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.white,
+                                              width: 2,
                                             ),
-                                    )
-                                  : Image.file(selectedImage!,
-                                      height: 120,
-                                      width: 120,
-                                      fit: BoxFit.cover),
+                                          ),
+                                          child: const Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
