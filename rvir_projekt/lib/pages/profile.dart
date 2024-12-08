@@ -56,6 +56,116 @@ class _ProfileState extends State<Profile> {
     setState(() {});
   }
 
+  void logoutConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          backgroundColor: const Color.fromARGB(255, 255, 242, 222),
+          title: const Text(
+            "Log Out",
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          content: const Text(
+            "Are you sure you want to log out?",
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child:
+                  const Text("Log Out", style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                AuthMethods().SignOut();
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => LogIn()));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void deleteConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          backgroundColor: const Color.fromARGB(255, 255, 242, 222),
+          title: const Text(
+            "Delete Account",
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          content: const Text(
+            "Are you sure you want to delete your account?",
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child:
+                  const Text("Delete", style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                AuthMethods().deleteUser();
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => LogIn()));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 //ko uploadam sliko s telefona se bo dodala v firebase (profilna)
   @override
   void initState() {
@@ -268,9 +378,7 @@ class _ProfileState extends State<Profile> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
-                        AuthMethods().deleteUser();
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => LogIn()));
+                        deleteConfirmation(context);
                       },
                       child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -311,9 +419,7 @@ class _ProfileState extends State<Profile> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
-                        AuthMethods().SignOut();
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => LogIn()));
+                        logoutConfirmation(context);
                       },
                       child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.0),
