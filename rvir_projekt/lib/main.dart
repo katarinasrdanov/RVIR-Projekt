@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rvir_projekt/pages/bottomnav.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rvir_projekt/pages/forgotPassword.dart';
 import 'package:rvir_projekt/pages/onboard.dart';
 import 'package:rvir_projekt/pages/signup.dart';
 
