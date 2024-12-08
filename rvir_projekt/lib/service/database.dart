@@ -37,4 +37,58 @@ class DatabaseMethods {
       print("Error adding address: $e");
     }
   }
+
+Future<List<Map<String, dynamic>>> getUserAddresses(String email) async {
+  List<Map<String, dynamic>> addresses = [];
+
+  try {
+    QuerySnapshot userQuerySnapshot = await firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (userQuerySnapshot.docs.isNotEmpty) {
+      String uid = userQuerySnapshot.docs.first.id;
+
+      QuerySnapshot addressQuerySnapshot = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('addresses')
+          .get();
+
+      for (var doc in addressQuerySnapshot.docs) {
+        addresses.add(doc.data() as Map<String, dynamic>);
+      }
+    }
+
+    return addresses;
+  } catch (e) {
+    print("Error fetching addresses: $e");
+    return [];
+  }
+}
+
+//jos radim na ovome...
+  Future<void> deleteAddress(String email, String addressId) async {
+    try {
+      QuerySnapshot querySnapshot = await firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String uid = querySnapshot.docs.first.id;
+
+        DocumentReference addressRef = firestore
+            .collection('users')
+            .doc(uid)
+            .collection('addresses')
+            .doc(addressId);
+
+        await addressRef.delete();
+      }
+    } catch (e) {
+      print("Error deleting address: $e");
+    }
+  }
 }

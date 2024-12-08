@@ -187,7 +187,7 @@ class _ProfileState extends State<Profile> {
                       TextButton(
                         child: const Text('Delete'),
                         onPressed: () {
-                          //await DatabaseMethods().deleteAddress(email!, address);
+                          //DatabaseMethods().deleteAddress(email!, addressId);
                           Navigator.of(context).pop(); // Close the dialog
                         },
                       ),
@@ -485,13 +485,17 @@ class _ProfileState extends State<Profile> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
-                      onTap: () {
-                        List<String> addresses = [
-                          'Vodnikov trg 6, 2000 Maribor',
-                          'Dravska 7, 2000 Maribor',
-                          'Koroska cesta 46, 2000 Maribor'
-                        ];
-                        showAddresses(context, addresses);
+                      onTap: () async {
+                        List<Map<String, dynamic>> userAddresses =
+                            await DatabaseMethods().getUserAddresses(email!);
+                        
+                        // Convert addresses into a displayable string list
+                        List<String> addressStrings =
+                            userAddresses.map((address) {
+                          return '${address['street']}, ${address['number']}, ${address['zipCode']} ${address['city']}';
+                        }).toList();
+
+                        showAddresses(context, addressStrings);
                       },
                       child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.0),
