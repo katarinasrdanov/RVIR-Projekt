@@ -18,4 +18,9 @@ class DatabaseMethods {
   Future addUserDetail(Map<String, dynamic> userInfoMap, String uid) async {
     return await firestore.collection('users').doc(uid).set(userInfoMap);
   }
+
+  Future<void> addAddress(String uid, Map<String, dynamic> addressInfo) async {
+    CollectionReference addressesRef = firestore.collection('users').doc(uid).collection('addresses');
+    await addressesRef.add(addressInfo);
+  }
 }

@@ -4,6 +4,7 @@ import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/pages/signup.dart';
 import 'package:rvir_projekt/service/auth.dart';
+import 'package:rvir_projekt/service/database.dart';
 import 'package:rvir_projekt/service/shared_pref.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -180,28 +181,14 @@ class _ProfileState extends State<Profile> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 13.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(address),
-                      SizedBox(height: 8.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TextButton(
-                            child: const Text('Edit'),
-                            onPressed: () {
-                              //fali funkcija
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Delete'),
-                            onPressed: () {
-                              //fja deleteAddress();
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                          ),
-                        ],
+                      TextButton(
+                        child: const Text('Delete'),
+                        onPressed: () {
+                          //fja deleteAddress();
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
                       ),
                     ],
                   ),
@@ -235,6 +222,8 @@ class _ProfileState extends State<Profile> {
     final TextEditingController zipCodeController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
 
+    String uid = "BdOEDFsVYvUvHnQMOyKvuh75xoD3";
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -264,9 +253,21 @@ class _ProfileState extends State<Profile> {
           actions: [
             TextButton(
               child: const Text('Save'),
-              onPressed: () {
-                //fja fali
-                Navigator.of(context).pop(); // Close the dialog after saving
+              onPressed: () async {
+                if (streetController.text.isNotEmpty &&
+                    numberController.text.isNotEmpty &&
+                    zipCodeController.text.isNotEmpty &&
+                    cityController.text.isNotEmpty) {
+                  Map<String, dynamic> address = {
+                    'street': streetController.text,
+                    'number': numberController.text,
+                    'zipCode': zipCodeController.text,
+                    'city': cityController.text,
+                  };
+
+                  await DatabaseMethods().addAddress(uid, address);
+                  Navigator.of(context).pop();
+                } // Close the dialog after saving
               },
             ),
             TextButton(
