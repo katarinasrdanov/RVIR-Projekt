@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/login.dart';
+import 'package:rvir_projekt/pages/signup.dart';
 import 'package:rvir_projekt/service/auth.dart';
 import 'package:rvir_projekt/service/shared_pref.dart';
 import 'package:image_picker/image_picker.dart';
@@ -157,7 +158,7 @@ class _ProfileState extends State<Profile> {
                 AuthMethods().deleteUser();
                 Navigator.of(context).pop();
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => LogIn()));
+                    context, MaterialPageRoute(builder: (context) => Signup()));
               },
             ),
           ],
