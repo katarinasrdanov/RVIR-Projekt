@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/login.dart';
@@ -186,7 +187,7 @@ class _ProfileState extends State<Profile> {
                       TextButton(
                         child: const Text('Delete'),
                         onPressed: () {
-                          //fja deleteAddress();
+                          //await DatabaseMethods().deleteAddress(email!, address);
                           Navigator.of(context).pop(); // Close the dialog
                         },
                       ),
@@ -221,8 +222,6 @@ class _ProfileState extends State<Profile> {
     final TextEditingController numberController = TextEditingController();
     final TextEditingController zipCodeController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
-
-    String uid = "BdOEDFsVYvUvHnQMOyKvuh75xoD3";
 
     showDialog(
       context: context,
@@ -264,8 +263,7 @@ class _ProfileState extends State<Profile> {
                     'zipCode': zipCodeController.text,
                     'city': cityController.text,
                   };
-
-                  await DatabaseMethods().addAddress(uid, address);
+                  await DatabaseMethods().addAddress(email!, address);
                   Navigator.of(context).pop();
                 } // Close the dialog after saving
               },

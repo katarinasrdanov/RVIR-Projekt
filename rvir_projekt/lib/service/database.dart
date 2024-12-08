@@ -14,13 +14,27 @@ class DatabaseMethods {
     return firestore.collection("food").snapshots();
   }
 
-
   Future addUserDetail(Map<String, dynamic> userInfoMap, String uid) async {
     return await firestore.collection('users').doc(uid).set(userInfoMap);
   }
 
-  Future<void> addAddress(String uid, Map<String, dynamic> addressInfo) async {
-    CollectionReference addressesRef = firestore.collection('users').doc(uid).collection('addresses');
-    await addressesRef.add(addressInfo);
+  Future<void> addAddress(
+      String email, Map<String, dynamic> addressInfo) async {
+    try {
+      QuerySnapshot querySnapshot = await firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String uid = querySnapshot.docs.first.id;
+
+        CollectionReference addressesRef =
+            firestore.collection('users').doc(uid).collection('addresses');
+        await addressesRef.add(addressInfo);
+      }
+    } catch (e) {
+      print("Error adding address: $e");
+    }
   }
 }
