@@ -167,6 +167,120 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  void showAddresses(BuildContext context, List<String> addresses) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Your Addresses'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: addresses.map((address) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 13.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(address),
+                      SizedBox(height: 8.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          TextButton(
+                            child: const Text('Edit'),
+                            onPressed: () {
+                              //fali funkcija
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Delete'),
+                            onPressed: () {
+                              //fja deleteAddress();
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Add'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                showAddAddress(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showAddAddress(BuildContext context) {
+    final TextEditingController streetController = TextEditingController();
+    final TextEditingController numberController = TextEditingController();
+    final TextEditingController zipCodeController = TextEditingController();
+    final TextEditingController cityController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add New Address'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: streetController,
+                decoration: InputDecoration(labelText: 'Street'),
+              ),
+              TextField(
+                controller: numberController,
+                decoration: InputDecoration(labelText: 'Number'),
+              ),
+              TextField(
+                controller: zipCodeController,
+                decoration: InputDecoration(labelText: 'Zip Code'),
+              ),
+              TextField(
+                controller: cityController,
+                decoration: InputDecoration(labelText: 'City'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Save'),
+              onPressed: () {
+                //fja fali
+                Navigator.of(context).pop(); // Close the dialog after saving
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 //ko uploadam sliko s telefona se bo dodala v firebase (profilna)
   @override
   void initState() {
@@ -311,7 +425,7 @@ class _ProfileState extends State<Profile> {
                                             "Email",
                                             style: TextStyle(
                                                 color: Colors.black,
-                                                fontSize: 16.0,
+                                                fontSize: 18.0,
                                                 fontWeight: FontWeight.w600),
                                           ),
                                           Text(
@@ -354,7 +468,7 @@ class _ProfileState extends State<Profile> {
                                             "Phone number",
                                             style: TextStyle(
                                                 color: Colors.black,
-                                                fontSize: 16.0,
+                                                fontSize: 18.0,
                                                 fontWeight: FontWeight.w600),
                                           ),
                                           Text(
@@ -371,38 +485,48 @@ class _ProfileState extends State<Profile> {
                   //novi kontejner za addresses:
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Material(
-                            borderRadius: BorderRadius.circular(10),
-                            elevation: 2.0,
-                            child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 15.0,
-                                  horizontal: 10.0,
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 255, 242, 222),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.add_home_outlined,
-                                        color: Colors.black),
-                                    SizedBox(width: 20.0),
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Addresses",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.w600),
-                                          )
-                                        ])
-                                  ],
-                                )))),
+                    child: GestureDetector(
+                      onTap: () {
+                        List<String> addresses = [
+                          'Vodnikov trg 6, 2000 Maribor',
+                          'Dravska 7, 2000 Maribor',
+                          'Koroska cesta 46, 2000 Maribor'
+                        ];
+                        showAddresses(context, addresses);
+                      },
+                      child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Material(
+                              borderRadius: BorderRadius.circular(10),
+                              elevation: 2.0,
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 15.0,
+                                    horizontal: 10.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 255, 242, 222),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.add_home_outlined,
+                                          color: Colors.black),
+                                      SizedBox(width: 20.0),
+                                      Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Addresses",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                          ])
+                                    ],
+                                  )))),
+                    ),
                   ),
                   //za delete
                   Padding(
@@ -437,7 +561,7 @@ class _ProfileState extends State<Profile> {
                                               "Delete Account",
                                               style: TextStyle(
                                                   color: Colors.black,
-                                                  fontSize: 20.0,
+                                                  fontSize: 18.0,
                                                   fontWeight: FontWeight.w600),
                                             )
                                           ])
@@ -478,7 +602,7 @@ class _ProfileState extends State<Profile> {
                                               "Log out",
                                               style: TextStyle(
                                                   color: Colors.black,
-                                                  fontSize: 20.0,
+                                                  fontSize: 18.0,
                                                   fontWeight: FontWeight.w600),
                                             )
                                           ])
