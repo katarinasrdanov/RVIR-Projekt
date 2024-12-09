@@ -180,7 +180,7 @@ class _ProfileState extends State<Profile> {
           title: Text('Your Addresses'),
           content: SizedBox(
             width: 400,
-            height: 150, 
+            height: 150,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -209,9 +209,58 @@ class _ProfileState extends State<Profile> {
                           child: const Text('Delete',
                               style: TextStyle(color: Colors.white)),
                           onPressed: () {
-                            DatabaseMethods()
-                                .deleteAddress(email!, address['id']);
-                            Navigator.of(context).pop();
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(15.0)),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 255, 242, 222),
+                                  title: const Text('Confirm Deletion'),
+                                  content: Text(
+                                      'Are you sure you want to delete this address?'),
+                                  actions: [
+                                    TextButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0Xffff5722),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                      child: const Text('Yes',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      onPressed: () {
+                                        DatabaseMethods().deleteAddress(
+                                            email!, address['id']);
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0Xffff5722),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                      child: const Text('No',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                         ),
                       ],
