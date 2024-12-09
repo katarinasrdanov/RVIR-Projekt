@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/login.dart';
@@ -169,7 +168,8 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  void showAddresses(BuildContext context, List<String> addresses) {
+  void showAddresses(
+      BuildContext context, List<Map<String, dynamic>> addresses) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -182,13 +182,16 @@ class _ProfileState extends State<Profile> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 13.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(address),
+                      Text(address['address'],
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       TextButton(
                         child: const Text('Delete'),
                         onPressed: () {
-                          //DatabaseMethods().deleteAddress(email!, addressId);
-                          Navigator.of(context).pop(); // Close the dialog
+                          DatabaseMethods()
+                              .deleteAddress(email!, address['id']);
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],
@@ -201,14 +204,14 @@ class _ProfileState extends State<Profile> {
             TextButton(
               child: const Text('Add'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
                 showAddAddress(context);
               },
             ),
             TextButton(
               child: const Text('Close'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -265,7 +268,7 @@ class _ProfileState extends State<Profile> {
                   };
                   await DatabaseMethods().addAddress(email!, address);
                   Navigator.of(context).pop();
-                } // Close the dialog after saving
+                }
               },
             ),
             TextButton(
@@ -488,11 +491,15 @@ class _ProfileState extends State<Profile> {
                       onTap: () async {
                         List<Map<String, dynamic>> userAddresses =
                             await DatabaseMethods().getUserAddresses(email!);
-                        
+
                         // Convert addresses into a displayable string list
-                        List<String> addressStrings =
+                        List<Map<String, dynamic>> addressStrings =
                             userAddresses.map((address) {
-                          return '${address['street']}, ${address['number']}, ${address['zipCode']} ${address['city']}';
+                          return {
+                            'address':
+                                '${address['street']}, ${address['number']}, ${address['zipCode']} ${address['city']}',
+                            'id': address['id'],
+                          };
                         }).toList();
 
                         showAddresses(context, addressStrings);
