@@ -174,42 +174,75 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          backgroundColor: const Color.fromARGB(255, 255, 242, 222),
           title: Text('Your Addresses'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: addresses.map((address) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 13.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(address['address'],
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextButton(
-                        child: const Text('Delete'),
-                        onPressed: () {
-                          DatabaseMethods()
-                              .deleteAddress(email!, address['id']);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
+          content: SizedBox(
+            width: 400,
+            height: 150, 
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: addresses.map((address) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 13.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            address['address'],
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0Xffff5722),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          child: const Text('Delete',
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            DatabaseMethods()
+                                .deleteAddress(email!, address['id']);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
           actions: [
             TextButton(
-              child: const Text('Add'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Add', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
                 showAddAddress(context);
               },
             ),
             TextButton(
-              child: const Text('Close'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Close', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -230,6 +263,9 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          backgroundColor: const Color.fromARGB(255, 255, 242, 222),
           title: Text('Add New Address'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -254,7 +290,13 @@ class _ProfileState extends State<Profile> {
           ),
           actions: [
             TextButton(
-              child: const Text('Save'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Save', style: TextStyle(color: Colors.white)),
               onPressed: () async {
                 if (streetController.text.isNotEmpty &&
                     numberController.text.isNotEmpty &&
@@ -272,7 +314,14 @@ class _ProfileState extends State<Profile> {
               },
             ),
             TextButton(
-              child: const Text('Cancel'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child:
+                  const Text('Cancel', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
