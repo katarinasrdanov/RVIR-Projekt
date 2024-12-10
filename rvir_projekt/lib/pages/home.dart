@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import  'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../widget/widget_support.dart';
 import '../pages/details.dart';
 import "../service/database.dart";
@@ -73,9 +74,15 @@ class _HomeState extends State<Home>{
                   child: showCategories(),
                 ),
                 SizedBox(height: 20.0,),
-                Container(
-                  height: 290,
-                  child: showItemsHorizontally(context, foodItemsStream),
+                Column(
+                  children: [
+                    Text("Top picks lately", style: AppWidget.semiBoldTextFieldStyle(),),
+                    SizedBox(height: 5.0,),
+                    Container(
+                      height: 295,
+                      child: showItemsHorizontally(context, foodItemsStream),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 20.0,),
                 Container(
@@ -189,18 +196,30 @@ Widget showItemsHorizontally(context, foodItemsStream) {
                             margin: EdgeInsets.all(5),
                             padding: EdgeInsets.all(14),
                             
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: Image.asset("images/burger.jpg", height: 150, width: 150, fit: BoxFit.cover,)),
-                                Text(ds["name"], style: AppWidget.semiBoldTextFieldStyle(),),
-                                SizedBox(height: 5.0,),
-                                Text(ds["shortDescr"], style: AppWidget.lightTextFieldStyle(),),
-                                SizedBox(height: 5.0),
-                                Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),)
-                            ],),
+                            child: Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: Image.asset("images/burger.jpg", height: 150, width: 150, fit: BoxFit.cover,)),
+                                  Text(ds["name"], style: AppWidget.semiBoldTextFieldStyle(),),
+                                  SizedBox(height: 5.0,),
+                                  Text(ds["shortDescr"], style: AppWidget.lightTextFieldStyle(),),
+                                  SizedBox(height: 5.0),
+                                  RatingBarIndicator(
+                                      rating: ds["avgRating"].toDouble(),
+                                      itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                      ),
+                                      itemCount: 5,
+                                      itemSize: 15.0,
+                                      direction: Axis.horizontal,
+                                  ),
+                                  Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),)
+                              ],),
+                            ),
                                             ),
                         ),
                       ),
@@ -211,6 +230,7 @@ Widget showItemsHorizontally(context, foodItemsStream) {
         }):CircularProgressIndicator();
     });
   }
+
 
 Widget showItemsVertically(context, foodItemsStream) {
   return StreamBuilder(stream: foodItemsStream, builder: (context, AsyncSnapshot snapshot){
