@@ -20,7 +20,7 @@ class AppWidget{
 
   static TextStyle lightTextFieldStyle(){
     return TextStyle(
-                color: Colors.black, 
+                color: Colors.grey, 
                 fontSize: 15.0, 
                 fontWeight: FontWeight.w500, 
                 fontFamily: 'Poppins');

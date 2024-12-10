@@ -91,4 +91,47 @@ Future<List<Map<String, dynamic>>> getUserAddresses(String email) async {
       print("Error deleting address: $e");
     }
   }
+
+  Future<void> saveRating(double rating, foodItemId) async{
+    try{
+
+      DocumentReference foodDocRef = FirebaseFirestore.instance.collection('food').doc(foodItemId);
+
+      
+      await firestore.runTransaction((transaction) async {
+          //get the rated food item document
+          DocumentSnapshot snapshot = await transaction.get(foodDocRef);
+
+        if (!snapshot.exists) {
+          throw Exception("Food item does not exist");
+        }
+
+        // Cast snapshot data to a map
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        List<dynamic> ratings = data['ratings'] ?? [];
+
+        // Add the new rating to the array
+        ratings.add(rating);
+
+        // Calculate the new average rating
+        double sum = 0;
+        for(int i = 0; i<ratings.length; i++){
+          sum+=ratings[i];
+        }
+        double avgRating = sum/ratings.length;
+
+        // Update the document
+        transaction.update(foodDocRef, {
+          'ratings': ratings,
+          'avgRating': avgRating,
+        });
+      });
+      
+
+
+      
+    }catch(err){
+
+    }
+  }
 }

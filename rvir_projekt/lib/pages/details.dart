@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rvir_projekt/service/database.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 
 class Details extends StatefulWidget{
 
@@ -68,6 +71,8 @@ class _DetailsState extends State<Details>{
             maxLines: 2, // Limits to 2 lines to prevent overflow
             overflow: TextOverflow.ellipsis, // Trims text if it exceeds
           ),
+          SizedBox(height:5.0),
+          // RatingBar.builder(itemBuilder:(context), => Icon(Icons.star, color: Colors.amber,))
         ],
       ),
     ),
@@ -122,13 +127,74 @@ class _DetailsState extends State<Details>{
               SizedBox(height: 10.0,),
               Row(
                 children: [
-                  Text("Delivery Time", style: AppWidget.lightTextFieldStyle(),),
+                  Text("Delivery Time", style: AppWidget.semiBoldTextFieldStyle(),),
                   SizedBox(width: 5.0,),
                   Icon(Icons.alarm),
                   SizedBox(width: 5.0,),
-                  Text(foodItem["deliveryTime"].toString()+" min", style: AppWidget.semiBoldTextFieldStyle(),)
+                  Text(foodItem["deliveryTime"].toString()+" min", style: AppWidget.semiBoldTextFieldStyle(),),
+                  
                 ],
               ),
+              SizedBox(height: 5),
+              GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text(
+                                "How did you like this product?",
+                                style: AppWidget.headlineTextFieldStyle(),
+                              ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RatingBar(
+                                    minRating: 1,
+                                    maxRating: 5,
+                                    initialRating: 1,
+                                    allowHalfRating: true,
+                                    updateOnDrag: true,
+                                    onRatingUpdate: (rating) {
+                                      DatabaseMethods().saveRating(rating, foodItem.id);
+                                      Future.delayed(Duration(milliseconds: 30), (){
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.orangeAccent,
+                                            content: Text("Thank you for rating!"),
+                                          ),
+                                        );
+
+                                        // Close the dialog immediately after rating is done
+                                        Navigator.of(context).pop();
+                                      });
+                                      
+                                    },
+                                    ratingWidget: RatingWidget(
+                                      full: Icon(Icons.star, color: Colors.amber), // Selected icon
+                                      half: Icon(Icons.star_half, color: Colors.amber), // Half-selected icon
+                                      empty: Icon(Icons.star_border, color: Colors.grey), // Unselected icon
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  // Cancel Button
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // Close the dialog
+                                      },
+                                      child: Text("Cancel", style: TextStyle(color: Colors.red)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+
+
+                        },
+                        child: Text("Rate this product?", style:AppWidget.lightTextFieldStyle(),)
+                        ),
               Spacer(),
               Padding(padding: const EdgeInsets.only(bottom: 40.0),
               child: Row(
