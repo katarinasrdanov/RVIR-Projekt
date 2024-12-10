@@ -51,78 +51,88 @@ class _DetailsState extends State<Details>{
               SizedBox(height: 15.0,),
               
               Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    // Item details (name and description)
-    Expanded( // Ensures the text wraps or shrinks to fit available space
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            foodItem["name"],
-            style: AppWidget.semiBoldTextFieldStyle(),
-            overflow: TextOverflow.ellipsis, // Avoids text overflow
-          ),
-          SizedBox(height: 5.0),
-          Text(
-            foodItem["shortDescr"],
-            style: AppWidget.headlineTextFieldStyle(),
-            maxLines: 2, // Limits to 2 lines to prevent overflow
-            overflow: TextOverflow.ellipsis, // Trims text if it exceeds
-          ),
-          SizedBox(height:5.0),
-          // RatingBar.builder(itemBuilder:(context), => Icon(Icons.star, color: Colors.amber,))
-        ],
-      ),
-    ),
-    // Quantity controls
-    Row(
-      children: [
-        // Decrement button
-        GestureDetector(
-          onTap: () {
-            if (numToOrder > 1) {
-              --numToOrder;
-            }
-            setState(() {});
-          },
-          child: Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(Icons.remove, color: Colors.white),
-          ),
-        ),
-        SizedBox(width: 15.0),
-        // Quantity number
-        Text(
-          numToOrder.toString(),
-          style: AppWidget.semiBoldTextFieldStyle(),
-        ),
-        SizedBox(width: 15.0),
-        // Increment button
-        GestureDetector(
-          onTap: () {
-            ++numToOrder;
-            setState(() {});
-          },
-          child: Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(Icons.add, color: Colors.white),
-          ),
-        ),
-      ],
-    ),
-  ],
-),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Item details (name and description)
+                  Expanded( // Ensures the text wraps or shrinks to fit available space
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          foodItem["name"],
+                          style: AppWidget.semiBoldTextFieldStyle(),
+                          overflow: TextOverflow.ellipsis, // Avoids text overflow
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          foodItem["shortDescr"],
+                          style: AppWidget.headlineTextFieldStyle(),
+                          maxLines: 2, // Limits to 2 lines to prevent overflow
+                          overflow: TextOverflow.ellipsis, // Trims text if it exceeds
+                        ),
+                        SizedBox(height:5.0),
+                        // RatingBar.builder(itemBuilder:(context), => Icon(Icons.star, color: Colors.amber,))
+                      ],
+                    ),
+                  ),
+                  // Quantity controls
+                  Row(
+                    children: [
+                      // Decrement button
+                      GestureDetector(
+                        onTap: () {
+                          if (numToOrder > 1) {
+                            --numToOrder;
+                          }
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.remove, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(width: 15.0),
+                      // Quantity number
+                      Text(
+                        numToOrder.toString(),
+                        style: AppWidget.semiBoldTextFieldStyle(),
+                      ),
+                      SizedBox(width: 15.0),
+                      // Increment button
+                      GestureDetector(
+                        onTap: () {
+                          ++numToOrder;
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.add, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               SizedBox(height: 20.0,),
+              RatingBarIndicator(
+                  rating: foodItem["avgRating"],
+                  itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                  ),
+                  itemCount: 5,
+                  itemSize: 30.0,
+                  direction: Axis.horizontal,
+              ),
               Text(foodItem["longDescr"], style: AppWidget.lightTextFieldStyle(), maxLines: 3,),
               SizedBox(height: 10.0,),
               Row(
