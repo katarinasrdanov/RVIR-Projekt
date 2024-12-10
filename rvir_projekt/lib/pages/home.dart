@@ -17,10 +17,12 @@ class _HomeState extends State<Home>{
 
   bool sweetFood=false, fastFood=false, healthyFood=false;
 
-  Stream? foodItemsStream;
+  Stream? allFoodItemsStream;
+  Stream? topFoodItemsStream;
 
   ontheload(String category) async{
-    foodItemsStream = await DatabaseMethods().getFoodItems(category);
+    allFoodItemsStream = await DatabaseMethods().getFoodItems(category);
+    topFoodItemsStream = await DatabaseMethods().getTopRatedFoodItems(category);
     setState(() {
       
     });
@@ -80,14 +82,14 @@ class _HomeState extends State<Home>{
                     SizedBox(height: 5.0,),
                     Container(
                       height: 295,
-                      child: showItemsHorizontally(context, foodItemsStream),
+                      child: showItemsHorizontally(context, topFoodItemsStream),
                     ),
                   ],
                 ),
                 SizedBox(height: 20.0,),
                 Container(
                   margin: EdgeInsets.only(right: 20.0),
-                  child: showItemsVertically(context, foodItemsStream),
+                  child: showItemsVertically(context, allFoodItemsStream),
                 )
                 
                 

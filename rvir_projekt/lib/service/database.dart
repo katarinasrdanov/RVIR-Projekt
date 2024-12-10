@@ -14,6 +14,18 @@ class DatabaseMethods {
     return firestore.collection("food").snapshots();
   }
 
+  //function that gets up to top 5 food items based on average rating
+  Future<Stream<QuerySnapshot>> getTopRatedFoodItems(String category) async {
+      Query query = firestore.collection("food").orderBy("avgRating", descending: true).limit(5);
+
+      if (category.isNotEmpty) {
+        query = query.where("category", isEqualTo: category);
+      }
+
+      return query.snapshots();
+    }
+
+
   Future addUserDetail(Map<String, dynamic> userInfoMap, String uid) async {
     return await firestore.collection('users').doc(uid).set(userInfoMap);
   }
