@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/login.dart';
@@ -169,46 +168,132 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  void showAddresses(BuildContext context, List<String> addresses) {
+  void showAddresses(
+      BuildContext context, List<Map<String, dynamic>> addresses) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          backgroundColor: const Color.fromARGB(255, 255, 242, 222),
           title: Text('Your Addresses'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: addresses.map((address) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 13.0),
-                  child: Column(
-                    children: [
-                      Text(address),
-                      TextButton(
-                        child: const Text('Delete'),
-                        onPressed: () {
-                          //DatabaseMethods().deleteAddress(email!, addressId);
-                          Navigator.of(context).pop(); // Close the dialog
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
+          content: SizedBox(
+            width: 400,
+            height: 150,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: addresses.map((address) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 13.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            address['address'],
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0Xffff5722),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          child: const Text('Delete',
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(15.0)),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 255, 242, 222),
+                                  title: const Text('Confirm Deletion'),
+                                  content: Text(
+                                      'Are you sure you want to delete this address?'),
+                                  actions: [
+                                    TextButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0Xffff5722),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                      child: const Text('Yes',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      onPressed: () {
+                                        DatabaseMethods().deleteAddress(
+                                            email!, address['id']);
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0Xffff5722),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                      child: const Text('No',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
           actions: [
             TextButton(
-              child: const Text('Add'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Add', style: TextStyle(color: Colors.white)),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
                 showAddAddress(context);
               },
             ),
             TextButton(
-              child: const Text('Close'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Close', style: TextStyle(color: Colors.white)),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -227,6 +312,9 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          backgroundColor: const Color.fromARGB(255, 255, 242, 222),
           title: Text('Add New Address'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -251,7 +339,13 @@ class _ProfileState extends State<Profile> {
           ),
           actions: [
             TextButton(
-              child: const Text('Save'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Save', style: TextStyle(color: Colors.white)),
               onPressed: () async {
                 if (streetController.text.isNotEmpty &&
                     numberController.text.isNotEmpty &&
@@ -265,11 +359,18 @@ class _ProfileState extends State<Profile> {
                   };
                   await DatabaseMethods().addAddress(email!, address);
                   Navigator.of(context).pop();
-                } // Close the dialog after saving
+                }
               },
             ),
             TextButton(
-              child: const Text('Cancel'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0Xffff5722),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child:
+                  const Text('Cancel', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -488,11 +589,15 @@ class _ProfileState extends State<Profile> {
                       onTap: () async {
                         List<Map<String, dynamic>> userAddresses =
                             await DatabaseMethods().getUserAddresses(email!);
-                        
+
                         // Convert addresses into a displayable string list
-                        List<String> addressStrings =
+                        List<Map<String, dynamic>> addressStrings =
                             userAddresses.map((address) {
-                          return '${address['street']}, ${address['number']}, ${address['zipCode']} ${address['city']}';
+                          return {
+                            'address':
+                                '${address['street']}, ${address['number']}, ${address['zipCode']} ${address['city']}',
+                            'id': address['id'],
+                          };
                         }).toList();
 
                         showAddresses(context, addressStrings);

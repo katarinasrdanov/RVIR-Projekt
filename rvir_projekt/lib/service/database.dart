@@ -50,37 +50,38 @@ class DatabaseMethods {
     }
   }
 
-Future<List<Map<String, dynamic>>> getUserAddresses(String email) async {
-  List<Map<String, dynamic>> addresses = [];
+  Future<List<Map<String, dynamic>>> getUserAddresses(String email) async {
+    List<Map<String, dynamic>> addresses = [];
 
-  try {
-    QuerySnapshot userQuerySnapshot = await firestore
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .get();
-
-    if (userQuerySnapshot.docs.isNotEmpty) {
-      String uid = userQuerySnapshot.docs.first.id;
-
-      QuerySnapshot addressQuerySnapshot = await firestore
+    try {
+      QuerySnapshot userQuerySnapshot = await firestore
           .collection('users')
-          .doc(uid)
-          .collection('addresses')
+          .where('email', isEqualTo: email)
           .get();
 
-      for (var doc in addressQuerySnapshot.docs) {
-        addresses.add(doc.data() as Map<String, dynamic>);
+      if (userQuerySnapshot.docs.isNotEmpty) {
+        String uid = userQuerySnapshot.docs.first.id;
+
+        QuerySnapshot addressQuerySnapshot = await firestore
+            .collection('users')
+            .doc(uid)
+            .collection('addresses')
+            .get();
+
+        for (var doc in addressQuerySnapshot.docs) {
+          Map<String, dynamic> addressData = doc.data() as Map<String, dynamic>;
+          addressData['id'] = doc.id;
+          addresses.add(addressData);
+        }
       }
+
+      return addresses;
+    } catch (e) {
+      print("Error fetching addresses: $e");
+      return [];
     }
-
-    return addresses;
-  } catch (e) {
-    print("Error fetching addresses: $e");
-    return [];
   }
-}
 
-//jos radim na ovome...
   Future<void> deleteAddress(String email, String addressId) async {
     try {
       QuerySnapshot querySnapshot = await firestore
