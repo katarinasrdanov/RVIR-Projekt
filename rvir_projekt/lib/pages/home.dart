@@ -77,8 +77,12 @@ class _HomeState extends State<Home>{
                 ),
                 SizedBox(height: 20.0,),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Top picks lately", style: AppWidget.semiBoldTextFieldStyle(),),
+                    Align(
+                      alignment: Alignment.centerLeft,  // Aligns to the left
+                      child: Text("TOP PICKS LATELY", style: AppWidget.semiBoldTextFieldStyle()),
+                    ),
                     SizedBox(height: 5.0,),
                     Container(
                       height: 295,
@@ -91,14 +95,7 @@ class _HomeState extends State<Home>{
                   margin: EdgeInsets.only(right: 20.0),
                   child: showItemsVertically(context, allFoodItemsStream),
                 )
-                
-                
-          
-                
-                
-                
-            
-                ],),
+                 ],),
         )
       ,)
     );
