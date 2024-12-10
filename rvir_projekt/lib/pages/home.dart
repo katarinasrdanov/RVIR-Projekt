@@ -195,30 +195,28 @@ Widget showItemsHorizontally(context, foodItemsStream) {
                             margin: EdgeInsets.all(5),
                             padding: EdgeInsets.all(14),
                             
-                            child: Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Image.asset("images/burger.jpg", height: 150, width: 150, fit: BoxFit.cover,)),
-                                  Text(ds["name"], style: AppWidget.semiBoldTextFieldStyle(),),
-                                  SizedBox(height: 5.0,),
-                                  Text(ds["shortDescr"], style: AppWidget.lightTextFieldStyle(),),
-                                  SizedBox(height: 5.0),
-                                  RatingBarIndicator(
-                                      rating: ds["avgRating"].toDouble(),
-                                      itemBuilder: (context, index) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                      ),
-                                      itemCount: 5,
-                                      itemSize: 15.0,
-                                      direction: Axis.horizontal,
-                                  ),
-                                  Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),)
-                              ],),
-                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Image.asset("images/burger.jpg", height: 150, width: 150, fit: BoxFit.cover,)),
+                                Text(ds["name"], style: AppWidget.semiBoldTextFieldStyle(),),
+                                SizedBox(height: 5.0,),
+                                Text(ds["shortDescr"], style: AppWidget.lightTextFieldStyle(),),
+                                SizedBox(height: 5.0),
+                                RatingBarIndicator(
+                                    rating: ds["avgRating"] != null ? ds["avgRating"].toDouble() : 0.0,
+                                    itemBuilder: (context, index) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                    ),
+                                    itemCount: 5,
+                                    itemSize: 15.0,
+                                    direction: Axis.horizontal,
+                                ),
+                                Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),)
+                            ],),
                                             ),
                         ),
                       ),

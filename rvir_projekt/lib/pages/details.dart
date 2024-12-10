@@ -151,6 +151,7 @@ class _DetailsState extends State<Details>{
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
+                              backgroundColor: Color.fromARGB(255, 255, 242, 222),
                               title: Text(
                                 "How did you like this product?",
                                 style: AppWidget.headlineTextFieldStyle(),
@@ -166,7 +167,7 @@ class _DetailsState extends State<Details>{
                                     updateOnDrag: true,
                                     onRatingUpdate: (rating) {
                                       DatabaseMethods().saveRating(rating, foodItem.id);
-                                      Future.delayed(Duration(milliseconds: 30), (){
+                                      Future.delayed(Duration(milliseconds: 50), (){
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             backgroundColor: Colors.orangeAccent,
@@ -193,7 +194,7 @@ class _DetailsState extends State<Details>{
                                       onPressed: () {
                                         Navigator.of(context).pop(); // Close the dialog
                                       },
-                                      child: Text("Cancel", style: TextStyle(color: Colors.red)),
+                                      child: Text("Cancel", style: TextStyle(color: Color(0Xffff5722))),
                                     ),
                                   ),
                                 ],

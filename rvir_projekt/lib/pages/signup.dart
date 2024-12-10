@@ -246,12 +246,7 @@ class _SignupState extends State<Signup> {
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
+                              SizedBox(
                       height: 60,
                     ),
                     GestureDetector(
@@ -262,6 +257,14 @@ class _SignupState extends State<Signup> {
                       child: Text("Already have an account? Log In!",
                           style: AppWidget.lightTextFieldStyle()),
                     )
+                            ],
+                          ),
+                          
+                        ),
+                      ),
+                      
+                    ),
+                    
                   ],
                 ),
               )

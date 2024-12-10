@@ -100,46 +100,44 @@ class DatabaseMethods {
     }
   }
 
-  Future<void> saveRating(double rating, foodItemId) async{
-    try{
+  Future<void> saveRating(double rating, foodItemId) async {
+  try {
 
-      DocumentReference foodDocRef = FirebaseFirestore.instance.collection('food').doc(foodItemId);
+    // Reference to the food item document
+    DocumentReference foodDocRef = FirebaseFirestore.instance.collection('food').doc(foodItemId);
 
-      
-      await firestore.runTransaction((transaction) async {
-          //get the rated food item document
-          DocumentSnapshot snapshot = await transaction.get(foodDocRef);
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
 
-        if (!snapshot.exists) {
-          throw Exception("Food item does not exist");
-        }
+      // Get the rated food item document
+      DocumentSnapshot snapshot = await transaction.get(foodDocRef);
 
-        // Cast snapshot data to a map
-        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        List<dynamic> ratings = data['ratings'] ?? [];
+      if (!snapshot.exists) {
+        throw Exception("Food item does not exist");
+      }
 
-        // Add the new rating to the array
-        ratings.add(rating);
+      // Cast snapshot data to a map
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      // Retrieve and update ratings
+      List<dynamic> ratings = data['ratings'] ?? [];
 
-        // Calculate the new average rating
-        double sum = 0;
-        for(int i = 0; i<ratings.length; i++){
-          sum+=ratings[i];
-        }
-        double avgRating = sum/ratings.length;
+      ratings.add(rating);
 
-        // Update the document
-        transaction.update(foodDocRef, {
-          'ratings': ratings,
-          'avgRating': avgRating,
-        });
+      // Calculate the new average rating
+      double sum = 0;
+      for (int i = 0; i < ratings.length; i++) {
+        sum += ratings[i]; 
+      }
+      double avgRating = sum / ratings.length as double;
+
+      // Update the document
+      transaction.update(foodDocRef, {
+        'ratings': ratings,
+        'avgRating': avgRating,
       });
-      
 
-
-      
-    }catch(err){
-
-    }
+    });
+  } catch (err) {
+    print("Error in saveRating: $err");
   }
+}
 }
