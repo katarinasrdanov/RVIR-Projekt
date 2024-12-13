@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:rvir_projekt/pages/onboard.dart';
-
+import 'package:rvir_projekt/widget/app_constant.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = publishableKey;
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
