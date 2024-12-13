@@ -247,16 +247,16 @@ class _SignupState extends State<Signup> {
                                 ),
                               ),
                               SizedBox(
-                      height: 60,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => LogIn()));
-                      },
-                      child: Text("Already have an account? Log In!",
-                          style: AppWidget.lightTextFieldStyle()),
-                    )
+                                  height: 60,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => LogIn()));
+                                  },
+                                  child: Text("Already have an account? Log In!",
+                                      style: AppWidget.lightTextFieldStyle()),
+                                )
                             ],
                           ),
                           

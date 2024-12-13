@@ -18,6 +18,13 @@ class Details extends StatefulWidget{
 
 class _DetailsState extends State<Details>{
   int numToOrder = 1;
+  int totalPrice = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    totalPrice = widget.foodItem["price"];
+  }
   
   _DetailsState();
 
@@ -84,6 +91,7 @@ class _DetailsState extends State<Details>{
                         onTap: () {
                           if (numToOrder > 1) {
                             --numToOrder;
+                            totalPrice = numToOrder*(foodItem["price"] as int);
                           }
                           setState(() {});
                         },
@@ -107,6 +115,7 @@ class _DetailsState extends State<Details>{
                       GestureDetector(
                         onTap: () {
                           ++numToOrder;
+                          totalPrice = totalPrice+(foodItem["price"] as int);
                           setState(() {});
                         },
                         child: Container(
@@ -222,7 +231,7 @@ class _DetailsState extends State<Details>{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Total Price", style: AppWidget.semiBoldTextFieldStyle(),),
-                      Text("\$"+foodItem["price"].toString(), style: AppWidget.headlineTextFieldStyle(),)
+                      Text("\$"+totalPrice.toString(), style: AppWidget.headlineTextFieldStyle(),)
                     ],
                   ),
                 ),
