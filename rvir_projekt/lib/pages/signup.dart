@@ -51,6 +51,7 @@ class _SignupState extends State<Signup> {
           await SharedPreferenceHelper().saveUserName(nameController.text);
           await SharedPreferenceHelper().saveUserPhone(phoneController.text);
           await SharedPreferenceHelper().saveUserEmail(emailController.text);
+          
 
           //pushReplacement umesto push da se ne moze vratit nazad
           Navigator.pushReplacement(

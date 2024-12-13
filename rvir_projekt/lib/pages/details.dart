@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rvir_projekt/service/database.dart';
+import 'package:rvir_projekt/service/shared_pref.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -19,10 +20,27 @@ class Details extends StatefulWidget{
 class _DetailsState extends State<Details>{
   int numToOrder = 1;
   int totalPrice = 0;
+  String? userId;
+
+  getthesharedpreference() async{
+    // TODO problem je ovdje jer nema user id sacuvan u shared preference
+    //userId = SharedPreferenceHelper().getUserId
+    //setState(() {
+      
+    //});
+  }
+
+  ontheload() async {
+    await getthesharedpreference();
+    setState(() {
+      
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    ontheload();
     totalPrice = widget.foodItem["price"];
   }
   
@@ -235,25 +253,43 @@ class _DetailsState extends State<Details>{
                     ],
                   ),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width/2,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
-                  child: Row( 
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                    Text("Add to cart", style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 16.0),),
-                    SizedBox(width: 30.0,),
-                    Container(
-                      padding: EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(8)
+                GestureDetector(
+                  onTap: (){
+                    Map<String, dynamic> itemToAdd = {
+                      "name":foodItem["name"],
+                      "quantity":numToOrder.toString(),
+                      "total":totalPrice.toString(),
+                      //"image":foodItem["image"]
+                    };
+
+                    DatabaseMethods().addItemToCart(itemToAdd, "a36bkBvFb7bSRpG7H6Z5vJKCati2");
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.orangeAccent,
+                                            content: Text("Item added to cart."),
+                                          ));
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width/2,
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
+                    child: Row( 
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                      Text("Add to cart", style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 16.0),),
+                      SizedBox(width: 30.0,),
+                      Container(
+                        padding: EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: Icon(Icons.shopping_cart_outlined, color: Colors.white,),
                       ),
-                      child: Icon(Icons.shopping_cart_outlined, color: Colors.white,),
-                    ),
-                    SizedBox(width: 10.0,)
-                  ],),
+                      SizedBox(width: 10.0,)
+                    ],),
+                  ),
                 )
               ],),
               

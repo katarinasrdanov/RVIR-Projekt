@@ -140,4 +140,8 @@ class DatabaseMethods {
     print("Error in saveRating: $err");
   }
 }
+
+  Future addItemToCart(Map<String, dynamic> userInfoMap, String uid) async {
+    return await firestore.collection('users').doc(uid).collection('order').add(userInfoMap);
+  }
 }
