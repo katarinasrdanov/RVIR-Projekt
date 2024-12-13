@@ -50,7 +50,8 @@ class _SignupState extends State<Signup> {
           await DatabaseMethods().addUserDetail(addUserInfo, uid);
           await SharedPreferenceHelper().saveUserName(nameController.text);
           await SharedPreferenceHelper().saveUserPhone(phoneController.text);
-          await SharedPreferenceHelper().saveUserEmail(emailController.text);
+          await SharedPreferenceHelper().saveUserEmail(emailController.text);          
+          await SharedPreferenceHelper().saveUserId(uid);
           
 
           //pushReplacement umesto push da se ne moze vratit nazad

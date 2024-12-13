@@ -5,6 +5,7 @@ class SharedPreferenceHelper {
   static String userEmailKey = "USEREMAILKEY";
   static String userPhoneKey = "USERPHONEKEY";
   static String userProfileKey = "USERPROFILEKEY";
+  static String userIdKey = "USERIDKEY";
   
 
   Future<bool> saveUserName(String getUserName) async {
@@ -27,6 +28,11 @@ class SharedPreferenceHelper {
     return prefs.setString(userProfileKey, getUserProfile);
   }
 
+  Future<bool> saveUserId(String getUserId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString(userIdKey, getUserId);
+  }
+
   //s tisto funkcijo pridobim ime usera kjerkoli v app zelim
   Future<String?> getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -46,5 +52,10 @@ class SharedPreferenceHelper {
   Future<String?> getUserProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userProfileKey);
+  }
+
+  Future<String?> getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(userIdKey);
   }
 }

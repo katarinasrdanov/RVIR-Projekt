@@ -23,11 +23,10 @@ class _DetailsState extends State<Details>{
   String? userId;
 
   getthesharedpreference() async{
-    // TODO problem je ovdje jer nema user id sacuvan u shared preference
-    //userId = SharedPreferenceHelper().getUserId
-    //setState(() {
+    userId = await SharedPreferenceHelper().getUserId();
+    setState(() {
       
-    //});
+    });
   }
 
   ontheload() async {
@@ -262,7 +261,7 @@ class _DetailsState extends State<Details>{
                       //"image":foodItem["image"]
                     };
 
-                    DatabaseMethods().addItemToCart(itemToAdd, "a36bkBvFb7bSRpG7H6Z5vJKCati2");
+                    DatabaseMethods().addItemToCart(itemToAdd, userId!);
 
                     ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
