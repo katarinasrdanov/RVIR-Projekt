@@ -16,14 +16,36 @@ class DatabaseMethods {
 
   //function that gets up to top 5 food items based on average rating
   Future<Stream<QuerySnapshot>> getTopRatedFoodItems(String category) async {
-      Query query = firestore.collection("food").orderBy("avgRating", descending: true).limit(5);
-      return query.snapshots();
-    }
-
+    Query query = firestore
+        .collection("food")
+        .orderBy("avgRating", descending: true)
+        .limit(5);
+    return query.snapshots();
+  }
 
   Future addUserDetail(Map<String, dynamic> userInfoMap, String uid) async {
     return await firestore.collection('users').doc(uid).set(userInfoMap);
   }
+
+  // funkcije za pridobitev celotnega user-a
+
+  Future<Map<String, dynamic>?> getUserDetails(String uid) async {
+    try {
+      DocumentSnapshot userDoc =
+          await firestore.collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        return userDoc.data() as Map<String, dynamic>?;
+      } else {
+        print("User document does not exist!");
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching user details: $e");
+      return null;
+    }
+  }
+
+  //
 
   Future<void> addAddress(
       String email, Map<String, dynamic> addressInfo) async {
@@ -101,47 +123,49 @@ class DatabaseMethods {
   }
 
   Future<void> saveRating(double rating, foodItemId) async {
-  try {
+    try {
+      // Reference to the food item document
+      DocumentReference foodDocRef =
+          FirebaseFirestore.instance.collection('food').doc(foodItemId);
 
-    // Reference to the food item document
-    DocumentReference foodDocRef = FirebaseFirestore.instance.collection('food').doc(foodItemId);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        // Get the rated food item document
+        DocumentSnapshot snapshot = await transaction.get(foodDocRef);
 
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
+        if (!snapshot.exists) {
+          throw Exception("Food item does not exist");
+        }
 
-      // Get the rated food item document
-      DocumentSnapshot snapshot = await transaction.get(foodDocRef);
+        // Cast snapshot data to a map
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        // Retrieve and update ratings
+        List<dynamic> ratings = data['ratings'] ?? [];
 
-      if (!snapshot.exists) {
-        throw Exception("Food item does not exist");
-      }
+        ratings.add(rating);
 
-      // Cast snapshot data to a map
-      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-      // Retrieve and update ratings
-      List<dynamic> ratings = data['ratings'] ?? [];
+        // Calculate the new average rating
+        double sum = 0;
+        for (int i = 0; i < ratings.length; i++) {
+          sum += ratings[i];
+        }
+        double avgRating = sum / ratings.length as double;
 
-      ratings.add(rating);
-
-      // Calculate the new average rating
-      double sum = 0;
-      for (int i = 0; i < ratings.length; i++) {
-        sum += ratings[i]; 
-      }
-      double avgRating = sum / ratings.length as double;
-
-      // Update the document
-      transaction.update(foodDocRef, {
-        'ratings': ratings,
-        'avgRating': avgRating,
+        // Update the document
+        transaction.update(foodDocRef, {
+          'ratings': ratings,
+          'avgRating': avgRating,
+        });
       });
-
-    });
-  } catch (err) {
-    print("Error in saveRating: $err");
+    } catch (err) {
+      print("Error in saveRating: $err");
+    }
   }
-}
 
   Future addItemToCart(Map<String, dynamic> userInfoMap, String uid) async {
-    return await firestore.collection('users').doc(uid).collection('order').add(userInfoMap);
+    return await firestore
+        .collection('users')
+        .doc(uid)
+        .collection('order')
+        .add(userInfoMap);
   }
 }

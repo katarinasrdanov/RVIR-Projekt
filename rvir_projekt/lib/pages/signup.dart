@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:rvir_projekt/pages/bottomnav.dart';
 import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/service/database.dart';
-import 'package:rvir_projekt/service/shared_pref.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 
 class Signup extends StatefulWidget {
@@ -48,11 +47,6 @@ class _SignupState extends State<Signup> {
 
           // sad je UID umjesto generated alphaNum
           await DatabaseMethods().addUserDetail(addUserInfo, uid);
-          await SharedPreferenceHelper().saveUserName(nameController.text);
-          await SharedPreferenceHelper().saveUserPhone(phoneController.text);
-          await SharedPreferenceHelper().saveUserEmail(emailController.text);          
-          await SharedPreferenceHelper().saveUserId(uid);
-          
 
           //pushReplacement umesto push da se ne moze vratit nazad
           Navigator.pushReplacement(

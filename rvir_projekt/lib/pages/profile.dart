@@ -1,13 +1,11 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/pages/signup.dart';
 import 'package:rvir_projekt/service/auth.dart';
 import 'package:rvir_projekt/service/database.dart';
-import 'package:rvir_projekt/service/shared_pref.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -22,6 +20,35 @@ class _ProfileState extends State<Profile> {
   final ImagePicker _picker = ImagePicker();
   File? selectedImage;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      String uid = currentUser.uid;
+
+      Map<String, dynamic>? userData =
+          await DatabaseMethods().getUserDetails(uid);
+
+      if (userData != null) {
+        setState(() {
+          name = userData['name'];
+          email = userData['email'];
+          number = userData['phone'];
+        });
+      } else {
+        print("Failed to fetch user data.");
+      }
+    } else {
+      print("No user logged in.");
+    }
+  }
+
   Future getImage() async {
     var image = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -32,7 +59,8 @@ class _ProfileState extends State<Profile> {
   }
 
   uploadItem() async {
-    if (selectedImage != null) {
+    //supabase upload u storage !!!!!!!!!!!!!!!1
+    /* if (selectedImage != null) {
       String addId = randomAlphaNumeric(10);
 
       Reference firebaseStorageRef =
@@ -40,23 +68,11 @@ class _ProfileState extends State<Profile> {
       final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
 
       var downloadUrl = await (await task).ref.getDownloadURL();
-      await SharedPreferenceHelper().saveUserProfile(downloadUrl);
+      //await SharedPreferenceHelper().saveUserProfile(downloadUrl);
       setState(() {});
-    }
+    } */
   }
 
-  getthesharedpref() async {
-    profile = await SharedPreferenceHelper().getUserProfile();
-    name = await SharedPreferenceHelper().getUserName();
-    email = await SharedPreferenceHelper().getUserEmail();
-    number = await SharedPreferenceHelper().getUserPhone();
-    setState(() {});
-  }
-
-  onthisload() async {
-    await getthesharedpref();
-    setState(() {});
-  }
 
   void logoutConfirmation(BuildContext context) {
     showDialog(
@@ -379,13 +395,6 @@ class _ProfileState extends State<Profile> {
         );
       },
     );
-  }
-
-//ko uploadam sliko s telefona se bo dodala v firebase (profilna)
-  @override
-  void initState() {
-    onthisload();
-    super.initState();
   }
 
   @override

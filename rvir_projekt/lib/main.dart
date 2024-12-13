@@ -3,9 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:rvir_projekt/pages/onboard.dart';
 import 'package:rvir_projekt/widget/app_constant.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://jrvzcixbcmgxvfllofkj.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpydnpjaXhiY21neHZmbGxvZmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQwNzM4ODAsImV4cCI6MjA0OTY0OTg4MH0.BT1lMWyGAzNrPnjHkemIsJBRlBgb_qDl_YXw21ryeGM',
+  );
   Stripe.publishableKey = publishableKey;
   await Firebase.initializeApp();
   runApp(const MyApp());
