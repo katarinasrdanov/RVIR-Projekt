@@ -156,7 +156,7 @@ class _WalletState extends State<Wallet> {
                       padding: EdgeInsets.symmetric(vertical: 12.0),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 50, 172, 86),
+                          color: Color(0Xffff5722),
                           borderRadius: BorderRadius.circular(8)),
                       child: Center(
                         child: Text(
@@ -202,8 +202,8 @@ class _WalletState extends State<Wallet> {
         add = int.parse(wallet!) + int.parse(amount);
 
         // Update the wallet in the database
-        await DatabaseMethods()
-            .updateWallet(FirebaseAuth.instance.currentUser!.uid, add.toString());
+        await DatabaseMethods().updateWallet(
+            FirebaseAuth.instance.currentUser!.uid, add.toString());
 
         await fetchUserData();
 
@@ -277,55 +277,40 @@ class _WalletState extends State<Wallet> {
   Future openEdit() => showDialog(
       context: context,
       builder: (context) => AlertDialog(
+            backgroundColor: const Color.fromARGB(255, 255, 242, 222),
+            title: Text('Add money',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                )),
             content: SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(Icons.cancel)),
-                        SizedBox(
-                          width: 60.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    child: TextField(
+                      controller: amountcontroller,
+                      decoration: InputDecoration(labelText: 'Enter Amount'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.black),
                         ),
-                        Center(
-                          child: Text(
-                            "Add Money",
-                            style: TextStyle(
-                              color: Color(0xFF008080),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Text("Amount"),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black38, width: 2.0),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextField(
-                        controller: amountcontroller,
-                        decoration: InputDecoration(
-                            border: InputBorder.none, hintText: 'Enter Amount'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Center(
-                      child: GestureDetector(
+                      SizedBox(height: 10.0),
+                      GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
                           makePayment(amountcontroller.text);
@@ -334,7 +319,7 @@ class _WalletState extends State<Wallet> {
                           width: 100,
                           padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: Color(0xFF008080),
+                            color: Color(0Xffff5722),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -344,9 +329,9 @@ class _WalletState extends State<Wallet> {
                           )),
                         ),
                       ),
-                    )
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ));
