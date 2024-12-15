@@ -215,7 +215,11 @@ class _ProfileState extends State<Profile> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           backgroundColor: const Color.fromARGB(255, 255, 242, 222),
-          title: Text('Your Addresses'),
+          title: Text('Your Addresses',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              )),
           content: SizedBox(
             width: 400,
             height: 150,
@@ -310,6 +314,15 @@ class _ProfileState extends State<Profile> {
           ),
           actions: [
             TextButton(
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0Xffff5722),
                 shape: RoundedRectangleBorder(
@@ -320,18 +333,6 @@ class _ProfileState extends State<Profile> {
               onPressed: () {
                 Navigator.of(context).pop();
                 showAddAddress(context);
-              },
-            ),
-            TextButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0Xffff5722),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Close', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.of(context).pop();
               },
             ),
           ],
@@ -353,7 +354,11 @@ class _ProfileState extends State<Profile> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           backgroundColor: const Color.fromARGB(255, 255, 242, 222),
-          title: Text('Add New Address'),
+          title: Text('Add New Address',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              )),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -377,6 +382,15 @@ class _ProfileState extends State<Profile> {
           ),
           actions: [
             TextButton(
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0Xffff5722),
                 shape: RoundedRectangleBorder(
@@ -398,19 +412,6 @@ class _ProfileState extends State<Profile> {
                   await DatabaseMethods().addAddress(email!, address);
                   Navigator.of(context).pop();
                 }
-              },
-            ),
-            TextButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0Xffff5722),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child:
-                  const Text('Cancel', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.of(context).pop();
               },
             ),
           ],
