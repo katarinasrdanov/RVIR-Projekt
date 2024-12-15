@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 import 'package:rvir_projekt/pages/login.dart';
 import 'package:rvir_projekt/pages/signup.dart';
 import 'package:rvir_projekt/service/auth.dart';
@@ -40,6 +43,7 @@ class _ProfileState extends State<Profile> {
           name = userData['name'];
           email = userData['email'];
           number = userData['phone'];
+          profile = userData['Image'];
         });
       } else {
         print("Failed to fetch user data.");
@@ -59,18 +63,37 @@ class _ProfileState extends State<Profile> {
   }
 
   uploadItem() async {
-    //supabase upload u storage !!!!!!!!!!!!!!!1
-    /* if (selectedImage != null) {
-      String addId = randomAlphaNumeric(10);
+    if (selectedImage != null) {
+      try {
+        String uniqueFileName =
+            '${DateTime.now().millisecondsSinceEpoch}_${randomAlphaNumeric(10)}';
 
-      Reference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child("blogImages").child(addId);
-      final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+        // profileImages path in upload u storage
+        Reference firebaseStorageRef = FirebaseStorage.instance
+            .ref()
+            .child('profileImages')
+            .child(uniqueFileName);
+        final UploadTask uploadTask =
+            firebaseStorageRef.putFile(selectedImage!);
 
-      var downloadUrl = await (await task).ref.getDownloadURL();
-      //await SharedPreferenceHelper().saveUserProfile(downloadUrl);
-      setState(() {});
-    } */
+        // Dobimo URL in save na usera kot atribut Image
+        String downloadUrl = await (await uploadTask).ref.getDownloadURL();
+        User? currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          String userUid = currentUser.uid;
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userUid)
+              .update({'Image': downloadUrl});
+
+          print('Image URL saved to Firestore: $downloadUrl');
+        }
+
+        setState(() {}); // Update the UI if necessary
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
+    }
   }
 
   void logoutConfirmation(BuildContext context) {
@@ -434,7 +457,7 @@ class _ProfileState extends State<Profile> {
                                 child: Stack(
                                   children: [
                                     selectedImage == null
-                                        ? profile == null
+                                        ? (profile == null || profile!.isEmpty)
                                             ? Image.asset(
                                                 "images/boy.jpg",
                                                 height: 120,
@@ -446,6 +469,14 @@ class _ProfileState extends State<Profile> {
                                                 height: 120,
                                                 width: 120,
                                                 fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    Image.asset(
+                                                  "images/boy.jpg",
+                                                  height: 120,
+                                                  width: 120,
+                                                  fit: BoxFit.cover,
+                                                ),
                                               )
                                         : Image.file(
                                             selectedImage!,
@@ -453,7 +484,7 @@ class _ProfileState extends State<Profile> {
                                             width: 120,
                                             fit: BoxFit.cover,
                                           ),
-                                    if (selectedImage == null)
+                                    if (profile == null || profile!.isEmpty)
                                       Positioned(
                                         bottom: 40,
                                         right: 45,
