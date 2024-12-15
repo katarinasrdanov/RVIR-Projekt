@@ -185,4 +185,22 @@ class DatabaseMethods {
         .collection("order")
         .snapshots();
   }
+
+  Future<void> deleteUserOrderCollection(String uid) async {
+  try {
+    CollectionReference orderCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('order');
+
+    QuerySnapshot orderSnapshot = await orderCollection.get();
+    for (QueryDocumentSnapshot doc in orderSnapshot.docs) {
+      await doc.reference.delete();
+    }
+  } catch (e) {
+    print("Error deleting order collection: $e");
+  }
 }
+}
+
+

@@ -180,6 +180,14 @@ class _OrderState extends State<Order> {
                 int amount = int.parse(wallet!) - amount2;
                 await DatabaseMethods()
                     .updateWallet(userUid!, amount.toString());
+                await DatabaseMethods().deleteUserOrderCollection(userUid!);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text(
+                    "Order placed successfully!",
+                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  ),
+                ));
               },
               child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
