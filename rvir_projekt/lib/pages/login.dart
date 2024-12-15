@@ -35,10 +35,20 @@ class _LogInState extends State<LogIn> {
         )));
       } else if (e.code == 'wrong-password') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "Incorect Password!",
-          style: TextStyle(fontSize: 18.0, color: Colors.black),
-        )));
+          backgroundColor: Colors.redAccent,
+          content: Text(
+            "Incorrect Password!",
+            style: TextStyle(fontSize: 18.0, color: Colors.white),
+          ),
+        ));
+      } else if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Text(
+            "Invalid email format!",
+            style: TextStyle(fontSize: 18.0, color: Colors.white),
+          ),
+        ));
       }
     }
   }
