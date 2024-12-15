@@ -42,7 +42,8 @@ class _SignupState extends State<Signup> {
           Map<String, dynamic> addUserInfo = {
             "name": nameController.text,
             "email": emailController.text,
-            "phone": phoneController.text
+            "phone": phoneController.text,
+            "wallet": "0"
           };
 
           // sad je UID umjesto generated alphaNum

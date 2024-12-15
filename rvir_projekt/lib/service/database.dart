@@ -45,7 +45,16 @@ class DatabaseMethods {
     }
   }
 
-  //
+  Future<void> updateWallet(String uid, int newBalance) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .update({'wallet': newBalance});
+    } catch (e) {
+      print("Error updating wallet: $e");
+    }
+  }
 
   Future<void> addAddress(
       String email, Map<String, dynamic> addressInfo) async {

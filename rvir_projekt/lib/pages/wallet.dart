@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:rvir_projekt/service/database.dart';
 import 'package:rvir_projekt/widget/app_constant.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 import 'package:http/http.dart' as http;
@@ -15,123 +17,156 @@ class Wallet extends StatefulWidget {
 
 class _WalletState extends State<Wallet> {
   Map<String, dynamic>? paymentIntent;
+  String? wallet;
+  int? add;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      String uid = currentUser.uid;
+
+      Map<String, dynamic>? userData =
+          await DatabaseMethods().getUserDetails(uid);
+
+      if (userData != null) {
+        setState(() {
+          wallet = userData['wallet'].toString();
+        });
+      } else {
+        print("Failed to fetch user's wallet.");
+      }
+    } else {
+      print("No user logged in.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Colors.white),
-        //margin: EdgeInsets.only(top: 50.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 0.45, left: 20.2, right: 20.0),
-              height: MediaQuery.of(context).size.height / 4.3,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color(0Xffff5722),
-                borderRadius: BorderRadius.vertical(
-                    bottom: Radius.elliptical(
-                        MediaQuery.of(context).size.width, 90.0)),
-              ),
-              child: Center(
-                  child: Text(
-                "Wallet",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40.0,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.bold),
-              )),
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 242, 222),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
+      body: wallet == null
+          ? CircularProgressIndicator()
+          : Container(
+              decoration: BoxDecoration(color: Colors.white),
+              //margin: EdgeInsets.only(top: 50.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    "images/wallet-icon.png",
-                    height: 60,
-                    width: 60,
-                    fit: BoxFit.cover,
+                  Container(
+                    padding:
+                        EdgeInsets.only(top: 0.45, left: 20.2, right: 20.0),
+                    height: MediaQuery.of(context).size.height / 4.3,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Color(0Xffff5722),
+                      borderRadius: BorderRadius.vertical(
+                          bottom: Radius.elliptical(
+                              MediaQuery.of(context).size.width, 90.0)),
+                    ),
+                    child: Center(
+                        child: Text(
+                      "Wallet",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40.0,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.bold),
+                    )),
                   ),
                   SizedBox(
-                    width: 40.0,
+                    height: 30.0,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.symmetric(horizontal: 16.0),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 242, 222),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "images/wallet-icon.png",
+                          height: 60,
+                          width: 60,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 40.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Your balance",
+                              style: AppWidget.lightTextFieldStyle(),
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Text(
+                              "\€" + wallet!,
+                              style: AppWidget.boldTextFieldStyle(),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      "Add money",
+                      style: AppWidget.semiBoldTextFieldStyle(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(
-                        "Your balance",
-                        style: AppWidget.lightTextFieldStyle(),
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      Text(
-                        "\€" + "100",
-                        style: AppWidget.boldTextFieldStyle(),
-                      )
+                      addMoneyContainer(100, () => makePayment('100')),
+                      addMoneyContainer(200, () => makePayment('200')),
+                      addMoneyContainer(500, () => makePayment('500')),
+                      addMoneyContainer(1000, () => makePayment('1000')),
                     ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 50, 172, 86),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Center(
+                      child: Text(
+                        "Add Money",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   )
                 ],
               ),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Text(
-                "Add money",
-                style: AppWidget.semiBoldTextFieldStyle(),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                addMoneyContainer(100, () => makePayment('100')),
-                addMoneyContainer(200, () => makePayment('200')),
-                addMoneyContainer(500, () => makePayment('500')),
-                addMoneyContainer(1000, () => makePayment('1000')),
-              ],
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0),
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 50, 172, 86),
-                  borderRadius: BorderRadius.circular(8)),
-              child: Center(
-                child: Text(
-                  "Add Money",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -158,6 +193,15 @@ class _WalletState extends State<Wallet> {
   displayPaymentSheet(String amount) async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
+        add = int.parse(wallet!) + int.parse(amount);
+
+        // Update the wallet in the database
+        await DatabaseMethods()
+            .updateWallet(FirebaseAuth.instance.currentUser!.uid, add!);
+
+        // Update the wallet locally to reflect changes on the UI
+        await fetchUserData();
+
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
