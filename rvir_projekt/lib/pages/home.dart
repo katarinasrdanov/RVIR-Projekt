@@ -215,7 +215,7 @@ Widget showItemsHorizontally(context, foodItemsStream) {
                                     itemSize: 15.0,
                                     direction: Axis.horizontal,
                                 ),
-                                Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),)
+                                Text("\€"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),)
                             ],),
                                             ),
                         ),
@@ -275,7 +275,7 @@ Widget showItemsVertically(context, foodItemsStream) {
                                   SizedBox(height: 5.0,),
                                   Container(
                                     width: MediaQuery.of(context).size.width/2,
-                                    child: Text("\$"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),),
+                                    child: Text("\€"+ds["price"].toString(), style: AppWidget.semiBoldTextFieldStyle(),),
                                   ),
                                   
                               ],

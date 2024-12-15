@@ -271,7 +271,7 @@ class _DetailsState extends State<Details> {
                         style: AppWidget.semiBoldTextFieldStyle(),
                       ),
                       Text(
-                        "\$" + totalPrice.toString(),
+                        "\€" + totalPrice.toString(),
                         style: AppWidget.headlineTextFieldStyle(),
                       )
                     ],

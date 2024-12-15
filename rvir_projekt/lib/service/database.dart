@@ -45,7 +45,7 @@ class DatabaseMethods {
     }
   }
 
-  Future<void> updateWallet(String uid, int newBalance) async {
+  Future<void> updateWallet(String uid, String newBalance) async {
     try {
       await firestore
           .collection('users')
@@ -176,5 +176,13 @@ class DatabaseMethods {
         .doc(uid)
         .collection('order')
         .add(userInfoMap);
+  }
+
+  Future<Stream<QuerySnapshot>> getFoodCart(String uid) async {
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection("order")
+        .snapshots();
   }
 }

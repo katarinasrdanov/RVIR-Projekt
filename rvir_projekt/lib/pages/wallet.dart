@@ -197,7 +197,7 @@ class _WalletState extends State<Wallet> {
 
         // Update the wallet in the database
         await DatabaseMethods()
-            .updateWallet(FirebaseAuth.instance.currentUser!.uid, add!);
+            .updateWallet(FirebaseAuth.instance.currentUser!.uid, add.toString());
 
         // Update the wallet locally to reflect changes on the UI
         await fetchUserData();

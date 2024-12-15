@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rvir_projekt/service/database.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 
 class Order extends StatefulWidget {
@@ -9,6 +13,117 @@ class Order extends StatefulWidget {
 }
 
 class _OrderState extends State<Order> {
+  String? userUid, wallet;
+
+  int total = 0, amount2 = 0;
+
+  void startTimer() {
+    Timer(Duration(milliseconds: 250), () {
+      amount2 = total;
+      setState(() {});
+    });
+  }
+
+  getUID() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    userUid = currentUser?.uid;
+    setState(() {});
+  }
+
+  Future<void> fetchWallet(String uid) async {
+    try {
+      Map<String, dynamic>? userDetails =
+          await DatabaseMethods().getUserDetails(uid);
+      if (userDetails != null) {
+        wallet = userDetails['wallet'];
+      }
+    } catch (e) {
+      print('Error fetching wallet: $e');
+    }
+  }
+
+  ontheload() async {
+    await getUID();
+    await fetchWallet(userUid!);
+    foodStream = await DatabaseMethods().getFoodCart(userUid!);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    ontheload();
+    startTimer();
+    super.initState();
+  }
+
+  Stream? foodStream;
+
+  Widget foodCart() {
+    return StreamBuilder(
+        stream: foodStream,
+        builder: (context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data.docs.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.docs[index];
+                    total = total + int.parse(ds["total"]);
+                    return Container(
+                      margin: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 90,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(child: Text(ds["quantity"])),
+                                ),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(60),
+                                    child: Image.asset("images/salad.jpg",
+                                        height: 90,
+                                        width: 90,
+                                        fit: BoxFit.cover)),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      ds["name"],
+                                      style: AppWidget.semiBoldTextFieldStyle(),
+                                    ),
+                                    Text(
+                                      "\€" + ds["total"],
+                                      style: AppWidget.semiBoldTextFieldStyle(),
+                                    )
+                                  ],
+                                )
+                              ],
+                            )),
+                      ),
+                    );
+                  })
+              : CircularProgressIndicator();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,50 +154,8 @@ class _OrderState extends State<Order> {
               height: 20.0,
             ),
             Container(
-              margin: EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 90,
-                          width: 30,
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(child: Text("2")),
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Image.asset("images/salad.jpg",
-                                height: 90, width: 90, fit: BoxFit.cover)),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "Pizza",
-                              style: AppWidget.semiBoldTextFieldStyle(),
-                            ),
-                            Text(
-                              "\$40",
-                              style: AppWidget.semiBoldTextFieldStyle(),
-                            )
-                          ],
-                        )
-                      ],
-                    )),
-              ),
-            ),
+                height: MediaQuery.of(context).size.height / 2,
+                child: foodCart()),
             Spacer(),
             Divider(),
             Padding(
@@ -94,29 +167,38 @@ class _OrderState extends State<Order> {
                     "Total Price",
                     style: AppWidget.boldTextFieldStyle(),
                   ),
-                  Text("\$50.0", style: AppWidget.semiBoldTextFieldStyle())
+                  Text("\€" + total.toString(),
+                      style: AppWidget.semiBoldTextFieldStyle())
                 ],
               ),
             ),
             SizedBox(
               height: 20.0,
             ),
-            Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Color(0Xffff5722),
-                    borderRadius: BorderRadius.circular(10)),
-                margin: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-                child: Center(
-                  child: Text(
-                    "Checkout",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ))
+            GestureDetector(
+              onTap: () async {
+                int amount = int.parse(wallet!) - amount2;
+                await DatabaseMethods()
+                    .updateWallet(userUid!, amount.toString());
+              },
+              child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Color(0Xffff5722),
+                      borderRadius: BorderRadius.circular(10)),
+                  margin:
+                      EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+                  child: Center(
+                    child: Text(
+                      "Checkout",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )),
+            )
           ],
         ),
       ),
