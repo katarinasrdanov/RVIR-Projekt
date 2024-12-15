@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../widget/widget_support.dart';
 import '../pages/details.dart';
+import 'package:rvir_projekt/pages/order.dart' as pages;
 import "../service/database.dart";
 
 class Home extends StatefulWidget {
@@ -65,23 +66,35 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(
-                "Hello ${userName ?? 'User'},",
-                style: AppWidget.boldTextFieldStyle(),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 20.0),
-                padding: EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Hello ${userName ?? 'User'},",
+                  style: AppWidget.boldTextFieldStyle(),
                 ),
-              )
-            ]),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => pages.Order()),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20.0),
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(
               height: 20.0,
             ),
