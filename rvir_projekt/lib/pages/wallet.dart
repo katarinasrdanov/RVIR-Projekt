@@ -19,6 +19,7 @@ class _WalletState extends State<Wallet> {
   Map<String, dynamic>? paymentIntent;
   String? wallet;
   int? add;
+  TextEditingController amountcontroller = new TextEditingController();
 
   @override
   void initState() {
@@ -146,21 +147,26 @@ class _WalletState extends State<Wallet> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.0),
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 50, 172, 86),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Center(
-                      child: Text(
-                        "Add Money",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold),
+                  GestureDetector(
+                    onTap: () {
+                      openEdit();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 50, 172, 86),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Center(
+                        child: Text(
+                          "Choose other amount",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   )
@@ -199,7 +205,6 @@ class _WalletState extends State<Wallet> {
         await DatabaseMethods()
             .updateWallet(FirebaseAuth.instance.currentUser!.uid, add.toString());
 
-        // Update the wallet locally to reflect changes on the UI
         await fetchUserData();
 
         showDialog(
@@ -267,6 +272,84 @@ class _WalletState extends State<Wallet> {
 
     return calculatedAmout.toString();
   }
+
+  //moznost izbire tocno dolecenega zneska
+  Future openEdit() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            content: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.cancel)),
+                        SizedBox(
+                          width: 60.0,
+                        ),
+                        Center(
+                          child: Text(
+                            "Add Money",
+                            style: TextStyle(
+                              color: Color(0xFF008080),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text("Amount"),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black38, width: 2.0),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextField(
+                        controller: amountcontroller,
+                        decoration: InputDecoration(
+                            border: InputBorder.none, hintText: 'Enter Amount'),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          makePayment(amountcontroller.text);
+                        },
+                        child: Container(
+                          width: 100,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF008080),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                              child: Text(
+                            "Pay",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ));
 }
 
 Widget addMoneyContainer(int money, VoidCallback onTap) {
