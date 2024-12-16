@@ -56,78 +56,52 @@ class DatabaseMethods {
     }
   }
 
-  Future<void> addAddress(
-      String email, Map<String, dynamic> addressInfo) async {
+  Future<void> addAddress(String uid, Map<String, dynamic> addressInfo) async {
     try {
-      QuerySnapshot querySnapshot = await firestore
-          .collection('users')
-          .where('email', isEqualTo: email)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        String uid = querySnapshot.docs.first.id;
-
-        CollectionReference addressesRef =
-            firestore.collection('users').doc(uid).collection('addresses');
-        await addressesRef.add(addressInfo);
-      }
+      CollectionReference addressesRef =
+          firestore.collection('users').doc(uid).collection('addresses');
+      await addressesRef.add(addressInfo);
     } catch (e) {
-      print("Error adding address: $e");
+      print('Failed to add address: $e');
+      rethrow;
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUserAddresses(String email) async {
-    List<Map<String, dynamic>> addresses = [];
-
+  Future<List<Map<String, dynamic>>> getUserAddresses(String uid) async {
     try {
-      QuerySnapshot userQuerySnapshot = await firestore
+      List<Map<String, dynamic>> addresses = [];
+      QuerySnapshot addressQuerySnapshot = await firestore
           .collection('users')
-          .where('email', isEqualTo: email)
+          .doc(uid)
+          .collection('addresses')
           .get();
 
-      if (userQuerySnapshot.docs.isNotEmpty) {
-        String uid = userQuerySnapshot.docs.first.id;
-
-        QuerySnapshot addressQuerySnapshot = await firestore
-            .collection('users')
-            .doc(uid)
-            .collection('addresses')
-            .get();
-
+      if (addressQuerySnapshot.docs.isNotEmpty) {
         for (var doc in addressQuerySnapshot.docs) {
           Map<String, dynamic> addressData = doc.data() as Map<String, dynamic>;
           addressData['id'] = doc.id;
           addresses.add(addressData);
         }
       }
-
       return addresses;
     } catch (e) {
-      print("Error fetching addresses: $e");
-      return [];
+      print('Failed to get addresses: $e');
+      rethrow;
     }
   }
 
-  Future<void> deleteAddress(String email, String addressId) async {
+  Future<void> deleteAddress(String uid, String addressId) async {
     try {
-      QuerySnapshot querySnapshot = await firestore
+      DocumentReference addressRef = firestore
           .collection('users')
-          .where('email', isEqualTo: email)
-          .get();
+          .doc(uid)
+          .collection('addresses')
+          .doc(addressId);
 
-      if (querySnapshot.docs.isNotEmpty) {
-        String uid = querySnapshot.docs.first.id;
-
-        DocumentReference addressRef = firestore
-            .collection('users')
-            .doc(uid)
-            .collection('addresses')
-            .doc(addressId);
-
-        await addressRef.delete();
-      }
+      await addressRef.delete();
     } catch (e) {
-      print("Error deleting address: $e");
+      print('Failed to delete address: $e');
+      rethrow;
     }
   }
 
@@ -187,22 +161,18 @@ class DatabaseMethods {
   }
 
   Future<void> deleteUserOrderCollection(String uid) async {
-  try {
-    CollectionReference orderCollection = FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('order');
+    try {
+      CollectionReference orderCollection = FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('order');
 
-    QuerySnapshot orderSnapshot = await orderCollection.get();
-    for (QueryDocumentSnapshot doc in orderSnapshot.docs) {
-      await doc.reference.delete();
+      QuerySnapshot orderSnapshot = await orderCollection.get();
+      for (QueryDocumentSnapshot doc in orderSnapshot.docs) {
+        await doc.reference.delete();
+      }
+    } catch (e) {
+      print("Error deleting order collection: $e");
     }
-  } catch (e) {
-    print("Error deleting order collection: $e");
   }
 }
-
-  
-}
-
-

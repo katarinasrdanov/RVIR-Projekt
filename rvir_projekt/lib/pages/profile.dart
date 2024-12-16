@@ -277,10 +277,15 @@ class _ProfileState extends State<Profile> {
                                           style:
                                               TextStyle(color: Colors.white)),
                                       onPressed: () {
-                                        DatabaseMethods().deleteAddress(
-                                            email!, address['id']);
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
+                                        User? currentUser =
+                                            FirebaseAuth.instance.currentUser;
+                                        if (currentUser != null) {
+                                          String userUid = currentUser.uid;
+                                          DatabaseMethods().deleteAddress(
+                                              userUid, address['id']);
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        }
                                       },
                                     ),
                                     TextButton(
@@ -409,8 +414,12 @@ class _ProfileState extends State<Profile> {
                     'zipCode': zipCodeController.text,
                     'city': cityController.text,
                   };
-                  await DatabaseMethods().addAddress(email!, address);
-                  Navigator.of(context).pop();
+                  User? currentUser = FirebaseAuth.instance.currentUser;
+                  if (currentUser != null) {
+                    String userUid = currentUser.uid;
+                    await DatabaseMethods().addAddress(userUid, address);
+                    Navigator.of(context).pop();
+                  }
                 }
               },
             ),
@@ -627,20 +636,24 @@ class _ProfileState extends State<Profile> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () async {
-                        List<Map<String, dynamic>> userAddresses =
-                            await DatabaseMethods().getUserAddresses(email!);
+                        User? currentUser = FirebaseAuth.instance.currentUser;
+                        if (currentUser != null) {
+                          String userUid = currentUser.uid;
+                          List<Map<String, dynamic>> userAddresses =
+                              await DatabaseMethods().getUserAddresses(userUid);
 
-                        // Convert addresses into a displayable string list
-                        List<Map<String, dynamic>> addressStrings =
-                            userAddresses.map((address) {
-                          return {
-                            'address':
-                                '${address['street']}, ${address['number']}, ${address['zipCode']} ${address['city']}',
-                            'id': address['id'],
-                          };
-                        }).toList();
+                          // Convert addresses into a displayable string list
+                          List<Map<String, dynamic>> addressStrings =
+                              userAddresses.map((address) {
+                            return {
+                              'address':
+                                  '${address['street']}, ${address['number']}, ${address['zipCode']} ${address['city']}',
+                              'id': address['id'],
+                            };
+                          }).toList();
 
-                        showAddresses(context, addressStrings);
+                          showAddresses(context, addressStrings);
+                        }
                       },
                       child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.0),
