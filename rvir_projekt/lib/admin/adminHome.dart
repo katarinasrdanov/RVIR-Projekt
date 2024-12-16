@@ -88,6 +88,7 @@ Widget showItemsVertically(context, foodItemsStream) {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Image Section
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
                                 child: Image.network(
@@ -100,8 +101,11 @@ Widget showItemsVertically(context, foodItemsStream) {
                               SizedBox(
                                 width: 20.0,
                               ),
+                              // Details and Buttons
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // Food Name
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width / 2,
@@ -114,6 +118,7 @@ Widget showItemsVertically(context, foodItemsStream) {
                                   SizedBox(
                                     height: 5.0,
                                   ),
+                                  // Short Description
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width / 2,
@@ -125,6 +130,7 @@ Widget showItemsVertically(context, foodItemsStream) {
                                   SizedBox(
                                     height: 5.0,
                                   ),
+                                  // Price
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width / 2,
@@ -133,6 +139,37 @@ Widget showItemsVertically(context, foodItemsStream) {
                                       style:
                                           AppWidget.semiBoldTextFieldStyle(),
                                     ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  // Edit and Delete Buttons
+                                  Row(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Edit action - To be implemented
+                                        },
+                                        child: Text("Edit"),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.blue,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 8),
+                                        ),
+                                      ),
+                                      SizedBox(width: 10.0),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Delete action - To be implemented
+                                        },
+                                        child: Text("Delete"),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 8),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               )
@@ -147,5 +184,6 @@ Widget showItemsVertically(context, foodItemsStream) {
             : CircularProgressIndicator();
       });
 }
+
 
 }
