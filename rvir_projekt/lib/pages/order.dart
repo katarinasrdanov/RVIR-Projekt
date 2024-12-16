@@ -18,7 +18,7 @@ class _OrderState extends State<Order> {
   int total = 0, amount2 = 0;
 
   void startTimer() {
-    Timer(Duration(milliseconds: 250), () {
+    Timer(Duration(milliseconds: 400), () {
       amount2 = total;
       setState(() {});
     });
@@ -79,7 +79,6 @@ class _OrderState extends State<Order> {
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                             decoration: BoxDecoration(
-                                
                                 color: Color.fromARGB(255, 255, 242, 222),
                                 borderRadius: BorderRadius.circular(10)),
                             padding: EdgeInsets.all(10),
@@ -109,10 +108,11 @@ class _OrderState extends State<Order> {
                                   children: [
                                     Container(
                                       width:
-                                          MediaQuery.of(context).size.width / 2,
+                                          MediaQuery.of(context).size.width / 3,
                                       child: Text(
                                         ds["name"],
-                                        style: AppWidget.semiBoldTextFieldStyle(),
+                                        style:
+                                            AppWidget.semiBoldTextFieldStyle(),
                                       ),
                                     ),
                                     Text(
@@ -134,9 +134,7 @@ class _OrderState extends State<Order> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.white
-        ),
+        decoration: BoxDecoration(color: Colors.white),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
