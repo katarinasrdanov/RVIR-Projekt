@@ -184,7 +184,7 @@ class _OrderState extends State<Order> {
             ),
             GestureDetector(
               onTap: () async {
-                if (amount2 < int.parse(wallet!)) {
+                if (amount2 < int.parse(wallet!) && amount2 != 0) {
                   int amount = int.parse(wallet!) - amount2;
                   await DatabaseMethods()
                       .updateWallet(userUid!, amount.toString());
@@ -193,6 +193,14 @@ class _OrderState extends State<Order> {
                     backgroundColor: Colors.green,
                     content: Text(
                       "Order placed successfully!",
+                      style: TextStyle(fontSize: 18.0, color: Colors.white),
+                    ),
+                  ));
+                } else if (amount2 == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Colors.yellow,
+                    content: Text(
+                      "The cart is empty!",
                       style: TextStyle(fontSize: 18.0, color: Colors.white),
                     ),
                   ));
