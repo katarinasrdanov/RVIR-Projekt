@@ -61,8 +61,8 @@ class _DetailsState extends State<Details> {
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              "images/salad.jpg",
+            child: Image.network(
+              foodItem["image"],
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 2.5,
               fit: BoxFit.cover,
@@ -151,7 +151,7 @@ class _DetailsState extends State<Details> {
             height: 20.0,
           ),
           RatingBarIndicator(
-            rating: foodItem["avgRating"],
+            rating: double.parse(foodItem["avgRating"].toString()) ,
             itemBuilder: (context, index) => Icon(
               Icons.star,
               color: Colors.amber,
@@ -283,7 +283,7 @@ class _DetailsState extends State<Details> {
                       "name": foodItem["name"],
                       "quantity": numToOrder.toString(),
                       "total": totalPrice.toString(),
-                      //"image":foodItem["image"]
+                      "image":foodItem["image"]
                     };
 
                     DatabaseMethods().addItemToCart(itemToAdd, userId!);

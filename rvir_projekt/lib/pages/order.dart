@@ -79,6 +79,8 @@ class _OrderState extends State<Order> {
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                             decoration: BoxDecoration(
+                                
+                                color: Color.fromARGB(255, 255, 242, 222),
                                 borderRadius: BorderRadius.circular(10)),
                             padding: EdgeInsets.all(10),
                             child: Row(
@@ -96,7 +98,7 @@ class _OrderState extends State<Order> {
                                 ),
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(60),
-                                    child: Image.asset("images/salad.jpg",
+                                    child: Image.network(ds["image"],
                                         height: 90,
                                         width: 90,
                                         fit: BoxFit.cover)),
@@ -105,9 +107,13 @@ class _OrderState extends State<Order> {
                                 ),
                                 Column(
                                   children: [
-                                    Text(
-                                      ds["name"],
-                                      style: AppWidget.semiBoldTextFieldStyle(),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: Text(
+                                        ds["name"],
+                                        style: AppWidget.semiBoldTextFieldStyle(),
+                                      ),
                                     ),
                                     Text(
                                       "\€" + ds["total"],
@@ -128,6 +134,9 @@ class _OrderState extends State<Order> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          color: Colors.white
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

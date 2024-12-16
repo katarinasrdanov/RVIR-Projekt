@@ -264,8 +264,8 @@ Widget showItemsHorizontally(context, foodItemsStream) {
                               children: [
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
-                                    child: Image.asset(
-                                      "images/burger.jpg",
+                                    child: Image.network(
+                                      ds["image"],
                                       height: 150,
                                       width: 150,
                                       fit: BoxFit.cover,
@@ -345,8 +345,8 @@ Widget showItemsVertically(context, foodItemsStream) {
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
-                                  child: Image.asset(
-                                    "images/burger.jpg",
+                                  child: Image.network(
+                                    ds["image"],
                                     height: 120,
                                     width: 120,
                                     fit: BoxFit.cover,
