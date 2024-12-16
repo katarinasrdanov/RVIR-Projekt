@@ -64,7 +64,6 @@ class _AdminHomeState extends State<AdminHome> {
       ),
     );
   }
-
 Widget showItemsVertically(context, foodItemsStream) {
   return StreamBuilder(
       stream: foodItemsStream,
@@ -80,110 +79,89 @@ Widget showItemsVertically(context, foodItemsStream) {
                   return Column(
                     children: [
                       Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 255, 242, 222),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Image Section
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Image.network(
-                                  ds["image"],
-                                  height: 120,
-                                  width: 120,
-                                  fit: BoxFit.cover,
-                                ),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 255, 242, 222),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Image Section
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Image.network(
+                                ds["image"],
+                                height: 120,
+                                width: 120,
+                                fit: BoxFit.cover,
                               ),
-                              SizedBox(
-                                width: 20.0,
-                              ),
-                              // Details and Buttons
-                              Column(
+                            ),
+                            SizedBox(width: 20.0),
+                            // Details Section
+                            Expanded(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Food Name
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2,
-                                    child: Text(
-                                      ds["name"],
-                                      style:
-                                          AppWidget.semiBoldTextFieldStyle(),
-                                    ),
+                                  Text(
+                                    ds["name"],
+                                    style: AppWidget.semiBoldTextFieldStyle(),
                                   ),
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
+                                  SizedBox(height: 5.0),
                                   // Short Description
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2,
-                                    child: Text(
-                                      ds["shortDescr"],
-                                      style: AppWidget.lightTextFieldStyle(),
-                                    ),
+                                  Text(
+                                    ds["shortDescr"],
+                                    style: AppWidget.lightTextFieldStyle(),
                                   ),
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
+                                  SizedBox(height: 5.0),
                                   // Price
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2,
-                                    child: Text(
-                                      "\€" + ds["price"].toString(),
-                                      style:
-                                          AppWidget.semiBoldTextFieldStyle(),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                  // Edit and Delete Buttons
-                                  Row(
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          // Edit action - To be implemented
-                                        },
-                                        child: Text("Edit"),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.blue,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 8),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10.0),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          // Delete action - To be implemented
-                                        },
-                                        child: Text("Delete"),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 8),
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    "\€" + ds["price"].toString(),
+                                    style: AppWidget.semiBoldTextFieldStyle(),
                                   ),
                                 ],
-                              )
-                            ],
-                          )),
-                      SizedBox(
-                        height: 15.0,
-                      )
+                              ),
+                            ),
+                            // Edit and Delete Icons
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    // Delete action - To be implemented
+                                  },
+                                  icon: Icon(Icons.delete, size: 18, color: Colors.grey),
+                                  tooltip: 'Delete Item',
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                ),
+                                SizedBox(height: 8.0), // Spacing between icons
+                                IconButton(
+                                  onPressed: () {
+                                    // Edit action - To be implemented
+                                  },
+                                  icon: Icon(Icons.edit_document, size: 18, color: Colors.grey),
+                                  tooltip: 'Edit Item',
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                ),
+                                
+                                
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 15.0),
                     ],
                   );
-                })
+                },
+              )
             : CircularProgressIndicator();
       });
 }
+
 
 
 }
