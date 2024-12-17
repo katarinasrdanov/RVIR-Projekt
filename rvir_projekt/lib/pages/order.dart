@@ -226,9 +226,116 @@ class _OrderState extends State<Order> {
                                       '${address['street']} ${address['number']}'),
                                   subtitle: Text(
                                       '${address['zipCode']}, ${address['city']}'),
-                                  onTap: () {
+                                  onTap: () async {
                                     selectedAddressId = address['id'];
                                     Navigator.pop(context);
+
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 255, 242, 222),
+                                          title: Text(
+                                            'Payment Method',
+                                            style: TextStyle(
+                                              fontSize: 22.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              ListTile(
+                                                title: Text('Pay by Wallet'),
+                                                leading: Icon(Icons
+                                                    .account_balance_wallet),
+                                                onTap: () async {
+                                                  if (amount2 <=
+                                                      int.parse(wallet!)) {
+                                                    int newWalletAmount =
+                                                        int.parse(wallet!) -
+                                                            amount2;
+                                                    await DatabaseMethods()
+                                                        .updateWallet(
+                                                            userUid!,
+                                                            newWalletAmount
+                                                                .toString());
+                                                    await DatabaseMethods()
+                                                        .deleteUserOrderCollection(
+                                                            userUid!);
+
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      content: Text(
+                                                        "Order placed successfully!",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ));
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      content: Text(
+                                                        "Insufficient amount in the wallet!",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ));
+                                                  }
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              ListTile(
+                                                title: Text('Cash on Delivery'),
+                                                leading: Icon(Icons.money),
+                                                onTap: () async {
+                                                  await DatabaseMethods()
+                                                      .deleteUserOrderCollection(
+                                                          userUid!);
+
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    content: Text(
+                                                      "Order placed successfully!",
+                                                      style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ));
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                 );
                               }).toList(),
@@ -253,28 +360,6 @@ class _OrderState extends State<Order> {
                   // If no address is selected, stop the checkout process
                   if (selectedAddressId == null) {
                     return;
-                  }
-
-                  if (amount2 <= int.parse(wallet!)) {
-                    int amount = int.parse(wallet!) - amount2;
-                    await DatabaseMethods()
-                        .updateWallet(userUid!, amount.toString());
-                    await DatabaseMethods().deleteUserOrderCollection(userUid!);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor: Colors.green,
-                      content: Text(
-                        "Order placed successfully!",
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ));
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor: Colors.red,
-                      content: Text(
-                        "Insufficient amount in the wallet!",
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ));
                   }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
