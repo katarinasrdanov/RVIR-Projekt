@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +9,8 @@ import 'package:rvir_projekt/service/database.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 
 class AddFoodItem extends StatefulWidget {
-  const AddFoodItem({super.key});
+  final DocumentSnapshot? foodItem;
+  const AddFoodItem({super.key, this.foodItem});
 
   @override
   State<AddFoodItem> createState() => _AddFoodItemState();
@@ -26,6 +28,20 @@ class _AddFoodItemState extends State<AddFoodItem> {
 
   final ImagePicker _picker = ImagePicker();
   File? selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.foodItem != null) {
+      nameController.text = widget.foodItem!["name"];
+      priceController.text = widget.foodItem!["price"].toString();
+      deliveryTimeController.text = widget.foodItem!["deliveryTime"].toString();
+      shortDescrController.text = widget.foodItem!["shortDescr"];
+      longDescrController.text = widget.foodItem!["longDescr"];
+      categoryValue = widget.foodItem!["category"];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -319,38 +335,75 @@ class _AddFoodItemState extends State<AddFoodItem> {
   }
 
   uploadItem() async {
-    if (selectedImage != null &&
-        nameController.text != "" &&
-        priceController.text != "" &&
-        longDescrController.text != "" &&
-        deliveryTimeController.text != "" &&
-        shortDescrController.text != "") {
-      String addId = randomAlphaNumeric(10);
+    if (selectedImage != null ||
+        widget.foodItem != null &&
+            nameController.text.isNotEmpty &&
+            priceController.text.isNotEmpty &&
+            longDescrController.text.isNotEmpty &&
+            deliveryTimeController.text.isNotEmpty &&
+            shortDescrController.text.isNotEmpty) {
+      String downloadUrl =
+          widget.foodItem != null ? widget.foodItem!["image"] : "";
 
-      Reference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child("foodImages").child(addId);
-      final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+      try {
+        if (selectedImage != null) {
+          String addId = widget.foodItem != null
+              ? widget.foodItem!.id
+              : randomAlphaNumeric(10);
 
-      var downloadUrl = await (await task).ref.getDownloadURL();
+          Reference firebaseStorageRef =
+              FirebaseStorage.instance.ref().child("foodImages").child(addId);
+          UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+          downloadUrl = await (await task).ref.getDownloadURL();
+        }
 
-      Map<String, dynamic> itemToAdd = {
-        "image": downloadUrl,
-        "name": nameController.text,
-        "price": int.parse(priceController.text),
-        "deliveryTime": int.parse(deliveryTimeController.text),
-        "shortDescr": shortDescrController.text,
-        "longDescr": longDescrController.text,
-        "category": categoryValue,
-        "avgRating": 0
-      };
-      await DatabaseMethods().addFoodItem(itemToAdd).then((value) {
+        Map<String, dynamic> itemToAdd = {
+          "image": downloadUrl,
+          "name": nameController.text,
+          "price": int.parse(priceController.text),
+          "deliveryTime": int.parse(deliveryTimeController.text),
+          "shortDescr": shortDescrController.text,
+          "longDescr": longDescrController.text,
+          "category": categoryValue,
+          "avgRating":
+              widget.foodItem != null ? widget.foodItem!["avgRating"] : 0
+        };
+
+        if (widget.foodItem != null) {
+          await DatabaseMethods()
+              .updateFoodItem(widget.foodItem!.id, itemToAdd);
+        } else {
+          await DatabaseMethods().addFoodItem(itemToAdd);
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.orangeAccent,
-            content: Text(
-              "Food Item has been added Successfully",
-              style: TextStyle(fontSize: 18.0),
-            )));
-      });
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            widget.foodItem != null
+                ? "Food Item Updated Successfully"
+                : "Food Item Added Successfully",
+            style: TextStyle(fontSize: 18.0, color: Colors.white),
+          ),
+        ));
+
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Text(
+            "Error saving the item!",
+            style: TextStyle(fontSize: 18.0, color: Colors.white),
+          ),
+        ));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text(
+          "Please fill all fields and select a category!",
+          style: TextStyle(fontSize: 18.0, color: Colors.white),
+        ),
+      ));
     }
   }
 }
