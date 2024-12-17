@@ -15,19 +15,17 @@ class AddFoodItem extends StatefulWidget {
 }
 
 class _AddFoodItemState extends State<AddFoodItem> {
-
   TextEditingController nameController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
   TextEditingController deliveryTimeController = new TextEditingController();
   TextEditingController shortDescrController = new TextEditingController();
-  TextEditingController longDescrController= new TextEditingController();
-  
+  TextEditingController longDescrController = new TextEditingController();
+
   String? categoryValue;
   final List<String> categories = ["fast food", "healthy food", "sweet food"];
 
   final ImagePicker _picker = ImagePicker();
   File? selectedImage;
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,214 +33,252 @@ class _AddFoodItemState extends State<AddFoodItem> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Add Food Item", style: AppWidget.headlineTextFieldStyle(),),
+        title: Text(
+          "Add Food Item",
+          style: AppWidget.headlineTextFieldStyle(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
+          margin:
+              EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Upload Image", style: AppWidget.semiBoldTextFieldStyle(),),
-              SizedBox(height: 20.0,),
-              selectedImage==null ? GestureDetector(
-                onTap: () {
-                  getImage();
-                },
-                child: Center(
-                  child: Material(
-                    color: Colors.white,
-                    elevation: 4.0,
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1.5), 
-                        borderRadius: BorderRadius.circular(20)
+              Text(
+                "Upload Image",
+                style: AppWidget.semiBoldTextFieldStyle(),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              selectedImage == null
+                  ? GestureDetector(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: Center(
+                        child: Material(
+                          color: Colors.white,
+                          elevation: 4.0,
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            width: 150,
+                            height: 150,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.black, width: 1.5),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Icon(Icons.camera_alt),
+                          ),
+                        ),
                       ),
-                      child: Icon(Icons.camera_alt),
+                    )
+                  : Center(
+                      child: Material(
+                        color: Colors.white,
+                        elevation: 4.0,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black, width: 1.5),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.file(
+                                selectedImage!,
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ) : Center(
-                child: Material(
-                  color: Colors.white,
-                  elevation: 4.0,
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1.5), 
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.file(selectedImage!, fit: BoxFit.cover,)),
-                  ),
-                ),
-              ) ,
-              SizedBox(height: 20.0,),
-        
+              SizedBox(
+                height: 20.0,
+              ),
+
               //Item name
               Text(
-                "Name:", style: AppWidget.semiBoldTextFieldStyle(),
+                "Name:",
+                style: AppWidget.semiBoldTextFieldStyle(),
               ),
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 242, 222),
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                    color: Color.fromARGB(255, 255, 242, 222),
+                    borderRadius: BorderRadius.circular(10)),
                 child: TextField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Item Name",
-                    hintStyle: AppWidget.lightTextFieldStyle()
-                  ),
+                      border: InputBorder.none,
+                      hintText: "Enter Item Name",
+                      hintStyle: AppWidget.lightTextFieldStyle()),
                 ),
               ),
-              SizedBox(height: 20.0,),
-        
+              SizedBox(
+                height: 20.0,
+              ),
+
               //Item price
               Text(
-                "Price:", style: AppWidget.semiBoldTextFieldStyle(),
+                "Price:",
+                style: AppWidget.semiBoldTextFieldStyle(),
               ),
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 242, 222),
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                    color: Color.fromARGB(255, 255, 242, 222),
+                    borderRadius: BorderRadius.circular(10)),
                 child: TextField(
                   controller: priceController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Item Price",
-                    hintStyle: AppWidget.lightTextFieldStyle()
-                  ),
+                      border: InputBorder.none,
+                      hintText: "Enter Item Price",
+                      hintStyle: AppWidget.lightTextFieldStyle()),
                 ),
               ),
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
 
               //Item category
               Text(
-                "Category:", style: AppWidget.semiBoldTextFieldStyle(),
+                "Category:",
+                style: AppWidget.semiBoldTextFieldStyle(),
               ),
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 242, 222),
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                    color: Color.fromARGB(255, 255, 242, 222),
+                    borderRadius: BorderRadius.circular(10)),
                 child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String> (
-                    items: categories.map((item) => DropdownMenuItem<String>(
+                    child: DropdownButton<String>(
+                  items: categories
+                      .map((item) => DropdownMenuItem<String>(
                           value: item,
                           child: Text(
                             item,
                             style:
                                 TextStyle(fontSize: 18.0, color: Colors.black),
                           )))
-                      .toList(), 
-                    onChanged: ((value) => {
-                      setState(() {
-                        this.categoryValue = value;
-                      })
-                    }),
-                    dropdownColor: Color.fromARGB(255, 255, 242, 222),
-                    hint: Text("Select Category", style: AppWidget.lightTextFieldStyle(),),
-                    iconSize: 36,
-                    icon: Icon(Icons.arrow_drop_down, color: Colors.black,),
-                    value: categoryValue,
-                    )
-                ),
+                      .toList(),
+                  onChanged: ((value) => {
+                        setState(() {
+                          this.categoryValue = value;
+                        })
+                      }),
+                  dropdownColor: Color.fromARGB(255, 255, 242, 222),
+                  hint: Text(
+                    "Select Category",
+                    style: AppWidget.lightTextFieldStyle(),
+                  ),
+                  iconSize: 36,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  value: categoryValue,
+                )),
               ),
               SizedBox(height: 20.0),
 
-        
               //Item delivery time
               Text(
-                "Delivery Time:", style: AppWidget.semiBoldTextFieldStyle(),
+                "Delivery Time:",
+                style: AppWidget.semiBoldTextFieldStyle(),
               ),
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 242, 222),
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                    color: Color.fromARGB(255, 255, 242, 222),
+                    borderRadius: BorderRadius.circular(10)),
                 child: TextField(
                   controller: deliveryTimeController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Item Delivery Time",
-                    hintStyle: AppWidget.lightTextFieldStyle()
-                  ),
+                      border: InputBorder.none,
+                      hintText: "Enter Item Delivery Time",
+                      hintStyle: AppWidget.lightTextFieldStyle()),
                 ),
               ),
-              SizedBox(height: 20.0,),
-        
+              SizedBox(
+                height: 20.0,
+              ),
+
               //Item short description
               Text(
-                "Short Description:", style: AppWidget.semiBoldTextFieldStyle(),
+                "Short Description:",
+                style: AppWidget.semiBoldTextFieldStyle(),
               ),
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 242, 222),
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                    color: Color.fromARGB(255, 255, 242, 222),
+                    borderRadius: BorderRadius.circular(10)),
                 child: TextField(
                   controller: shortDescrController,
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Short Description",
-                    hintStyle: AppWidget.lightTextFieldStyle()
-                  ),
+                      border: InputBorder.none,
+                      hintText: "Enter Short Description",
+                      hintStyle: AppWidget.lightTextFieldStyle()),
                 ),
               ),
-              SizedBox(height: 20.0,),
-        
+              SizedBox(
+                height: 20.0,
+              ),
+
               //Item long description
               Text(
-                "Long Description:", style: AppWidget.semiBoldTextFieldStyle(),
+                "Long Description:",
+                style: AppWidget.semiBoldTextFieldStyle(),
               ),
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 242, 222),
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                    color: Color.fromARGB(255, 255, 242, 222),
+                    borderRadius: BorderRadius.circular(10)),
                 child: TextField(
                   maxLines: 6,
                   controller: longDescrController,
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Long Description",
-                    hintStyle: AppWidget.lightTextFieldStyle()
-                  ),
+                      border: InputBorder.none,
+                      hintText: "Enter Long Description",
+                      hintStyle: AppWidget.lightTextFieldStyle()),
                 ),
               ),
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
               //add item button
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   uploadItem();
                 },
                 child: Center(
@@ -279,9 +315,7 @@ class _AddFoodItemState extends State<AddFoodItem> {
     var image = await _picker.pickImage(source: ImageSource.gallery);
 
     selectedImage = File(image!.path);
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   uploadItem() async {
@@ -302,12 +336,12 @@ class _AddFoodItemState extends State<AddFoodItem> {
       Map<String, dynamic> itemToAdd = {
         "image": downloadUrl,
         "name": nameController.text,
-        "price": priceController.text,
-        "deliveryTime": deliveryTimeController.text,
-        "shortDescr" : shortDescrController.text,
-        "longDescr" : longDescrController.text,
-        "category" : categoryValue,
-        "avgRating" : 0
+        "price": int.parse(priceController.text),
+        "deliveryTime": int.parse(deliveryTimeController.text),
+        "shortDescr": shortDescrController.text,
+        "longDescr": longDescrController.text,
+        "category": categoryValue,
+        "avgRating": 0
       };
       await DatabaseMethods().addFoodItem(itemToAdd).then((value) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
