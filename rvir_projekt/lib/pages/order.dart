@@ -184,31 +184,103 @@ class _OrderState extends State<Order> {
             ),
             GestureDetector(
               onTap: () async {
-                if (amount2 < int.parse(wallet!) && amount2 != 0) {
-                  int amount = int.parse(wallet!) - amount2;
-                  await DatabaseMethods()
-                      .updateWallet(userUid!, amount.toString());
-                  await DatabaseMethods().deleteUserOrderCollection(userUid!);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.green,
-                    content: Text(
-                      "Order placed successfully!",
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                  ));
-                } else if (amount2 == 0) {
+                if (amount2 != 0) {
+                  List<Map<String, dynamic>> addresses =
+                      await DatabaseMethods().getUserAddresses(userUid!);
+                  if (addresses.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(
+                        "No addresses found. Please add an address before proceeding.",
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
+                    ));
+                    return;
+                  }
+
+                  String? selectedAddressId;
+
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 242, 222),
+                        title: Text(
+                          'Select Address',
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        content: SizedBox(
+                          width: 400,
+                          height: 150,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: addresses.map((address) {
+                                return ListTile(
+                                  title: Text(
+                                      '${address['street']} ${address['number']}'),
+                                  subtitle: Text(
+                                      '${address['zipCode']}, ${address['city']}'),
+                                  onTap: () {
+                                    selectedAddressId = address['id'];
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  // If no address is selected, stop the checkout process
+                  if (selectedAddressId == null) {
+                    return;
+                  }
+
+                  if (amount2 <= int.parse(wallet!)) {
+                    int amount = int.parse(wallet!) - amount2;
+                    await DatabaseMethods()
+                        .updateWallet(userUid!, amount.toString());
+                    await DatabaseMethods().deleteUserOrderCollection(userUid!);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Colors.green,
+                      content: Text(
+                        "Order placed successfully!",
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
+                    ));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(
+                        "Insufficient amount in the wallet!",
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
+                    ));
+                  }
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Colors.yellow,
                     content: Text(
                       "The cart is empty!",
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                  ));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.red,
-                    content: Text(
-                      "Insufficient amount in the wallet!",
                       style: TextStyle(fontSize: 18.0, color: Colors.white),
                     ),
                   ));
