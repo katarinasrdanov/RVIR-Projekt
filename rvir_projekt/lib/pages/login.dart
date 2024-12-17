@@ -27,17 +27,11 @@ class _LogInState extends State<LogIn> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => BottomNav()));
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "User not found",
-          style: TextStyle(fontSize: 18.0, color: Colors.black),
-        )));
-      } else if (e.code == 'wrong-password') {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.redAccent,
           content: Text(
-            "Incorrect Password!",
+            "Incorrect email or password, please try again!",
             style: TextStyle(fontSize: 18.0, color: Colors.white),
           ),
         ));
