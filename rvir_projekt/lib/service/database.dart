@@ -187,6 +187,17 @@ class DatabaseMethods {
       print("Error deleting order collection: $err");
     }
   }
+
+  Future <void> addFoodItem(Map<String, dynamic> itemToAdd) async {
+    try {
+      CollectionReference foodRef =
+          firestore.collection('food');
+      await foodRef.add(itemToAdd);
+    } catch (e) {
+      print('Failed to add food item: $e');
+      rethrow;
+    }
+  }
 }
 
 

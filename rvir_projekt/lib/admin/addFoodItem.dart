@@ -1,4 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
+import 'package:rvir_projekt/service/database.dart';
 import 'package:rvir_projekt/widget/widget_support.dart';
 
 class AddFoodItem extends StatefulWidget {
@@ -15,9 +21,12 @@ class _AddFoodItemState extends State<AddFoodItem> {
   TextEditingController deliveryTimeController = new TextEditingController();
   TextEditingController shortDescrController = new TextEditingController();
   TextEditingController longDescrController= new TextEditingController();
-  //TextEditingController categoryController = new TextEditingController();
+  
   String? categoryValue;
   final List<String> categories = ["fast food", "healthy food", "sweet food"];
+
+  final ImagePicker _picker = ImagePicker();
+  File? selectedImage;
 
 
   @override
@@ -36,7 +45,27 @@ class _AddFoodItemState extends State<AddFoodItem> {
             children: [
               Text("Upload Image", style: AppWidget.semiBoldTextFieldStyle(),),
               SizedBox(height: 20.0,),
-              Center(
+              selectedImage==null ? GestureDetector(
+                onTap: () {
+                  getImage();
+                },
+                child: Center(
+                  child: Material(
+                    color: Colors.white,
+                    elevation: 4.0,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.5), 
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Icon(Icons.camera_alt),
+                    ),
+                  ),
+                ),
+              ) : Center(
                 child: Material(
                   color: Colors.white,
                   elevation: 4.0,
@@ -48,10 +77,12 @@ class _AddFoodItemState extends State<AddFoodItem> {
                       border: Border.all(color: Colors.black, width: 1.5), 
                       borderRadius: BorderRadius.circular(20)
                     ),
-                    child: Icon(Icons.camera_alt),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.file(selectedImage!, fit: BoxFit.cover,)),
                   ),
                 ),
-              ),
+              ) ,
               SizedBox(height: 20.0,),
         
               //Item name
@@ -212,7 +243,7 @@ class _AddFoodItemState extends State<AddFoodItem> {
               //add item button
               GestureDetector(
                 onTap: (){
-                  //uploadItem();
+                  uploadItem();
                 },
                 child: Center(
                   child: Material(
@@ -242,5 +273,50 @@ class _AddFoodItemState extends State<AddFoodItem> {
         ),
       ),
     );
+  }
+
+  Future getImage() async {
+    var image = await _picker.pickImage(source: ImageSource.gallery);
+
+    selectedImage = File(image!.path);
+    setState(() {
+      
+    });
+  }
+
+  uploadItem() async {
+    if (selectedImage != null &&
+        nameController.text != "" &&
+        priceController.text != "" &&
+        longDescrController.text != "" &&
+        deliveryTimeController.text != "" &&
+        shortDescrController.text != "") {
+      String addId = randomAlphaNumeric(10);
+
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child("foodImages").child(addId);
+      final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+
+      var downloadUrl = await (await task).ref.getDownloadURL();
+
+      Map<String, dynamic> itemToAdd = {
+        "image": downloadUrl,
+        "name": nameController.text,
+        "price": priceController.text,
+        "deliveryTime": deliveryTimeController.text,
+        "shortDescr" : shortDescrController.text,
+        "longDescr" : longDescrController.text,
+        "category" : categoryValue,
+        "avgRating" : 0
+      };
+      await DatabaseMethods().addFoodItem(itemToAdd).then((value) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "Food Item has been added Successfully",
+              style: TextStyle(fontSize: 18.0),
+            )));
+      });
+    }
   }
 }
