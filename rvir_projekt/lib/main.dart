@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:rvir_projekt/admin/adminHome.dart';
+import 'package:rvir_projekt/admin/adminLogin.dart';
 import 'package:rvir_projekt/pages/onboard.dart';
 import 'package:rvir_projekt/widget/app_constant.dart';
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: AdminHome(),
+      home: AdminLogin(),
     );
   }
 }

@@ -51,6 +51,7 @@ class _AdminHomeState extends State<AdminHome> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 255, 242, 222),
         onPressed: () {
           Navigator.push(
             context,
@@ -79,6 +80,7 @@ Widget showItemsVertically(context, foodItemsStream) {
                   return Column(
                     children: [
                       Container(
+
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 255, 242, 222),
@@ -129,7 +131,8 @@ Widget showItemsVertically(context, foodItemsStream) {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    // Delete action - To be implemented
+                                    _showDeleteConfirmationDialog(
+                                        context, ds.id, ds["name"]);
                                   },
                                   icon: Icon(Icons.delete, size: 18, color: Colors.grey),
                                   tooltip: 'Delete Item',
@@ -161,6 +164,33 @@ Widget showItemsVertically(context, foodItemsStream) {
             : CircularProgressIndicator();
       });
 }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String id, String name) {
+    showDialog(context: context, builder: 
+                (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: Color.fromARGB(255, 255, 242, 222),
+                    title: Text("Delete Confirmation"),
+                    content: Text("Are yu sure you want to delete "+name),
+                    actions: [
+                      //Cancle button
+                      TextButton(
+                        onPressed: (){
+                          Navigator.of(context).pop(); }, 
+                          child: Text("Cancle", style: AppWidget.lightTextFieldStyle(),)),
+                      TextButton(
+                        onPressed: () {
+                          DatabaseMethods().deleteFoodItem(id); // Delete the item
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        child: Text('Delete', style: TextStyle(color: Colors.red, fontSize: 15.0, fontWeight: FontWeight.w500, fontFamily: 'Poppins')),
+                      ),
+                  
+                    ],
+
+                  );    
+                });
+  }
 
 
 
