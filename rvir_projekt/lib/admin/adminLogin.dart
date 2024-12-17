@@ -71,9 +71,9 @@ class _AdminLoginState extends State<AdminLogin>{
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                    hintText: 'Email',
+                                    hintText: 'Username',
                                     hintStyle: AppWidget.lightTextFieldStyle(),
-                                    prefixIcon: Icon(Icons.email_outlined)),
+                                    prefixIcon: Icon(Icons.person_2_outlined)),
                               ),
                               SizedBox(
                                 height: 30.0,

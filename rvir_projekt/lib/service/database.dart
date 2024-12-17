@@ -175,4 +175,19 @@ class DatabaseMethods {
       print("Error deleting order collection: $e");
     }
   }
+
+  Future<void> deleteFoodItem(String id) async{
+    try{
+      DocumentReference foodItemRef = firestore
+          .collection('food')
+          .doc(id);
+      
+      await foodItemRef.delete();
+    }catch(err){
+      print("Error deleting order collection: $err");
+    }
+  }
 }
+
+
+  
