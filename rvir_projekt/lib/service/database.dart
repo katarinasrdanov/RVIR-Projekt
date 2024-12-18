@@ -152,6 +152,15 @@ class DatabaseMethods {
         .add(userInfoMap);
   }
 
+  Future<void> removeCartItem(String userUid, String itemId) async {
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userUid)
+        .collection("order")
+        .doc(itemId)
+        .delete();
+  }
+
   Future<Stream<QuerySnapshot>> getFoodCart(String uid) async {
     return await FirebaseFirestore.instance
         .collection("users")

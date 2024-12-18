@@ -79,47 +79,78 @@ class _OrderState extends State<Order> {
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 255, 242, 222),
                                 borderRadius: BorderRadius.circular(10)),
                             padding: EdgeInsets.all(10),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  height: 90,
-                                  width: 30,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(child: Text(ds["quantity"])),
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: Image.network(ds["image"],
-                                        height: 90,
-                                        width: 90,
-                                        fit: BoxFit.cover)),
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                Column(
+                                Row(
                                   children: [
                                     Container(
-                                      width:
-                                          MediaQuery.of(context).size.width / 3,
-                                      child: Text(
-                                        ds["name"],
-                                        style:
-                                            AppWidget.semiBoldTextFieldStyle(),
-                                      ),
+                                      height: 90,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child:
+                                          Center(child: Text(ds["quantity"])),
                                     ),
-                                    Text(
-                                      "\€" + ds["total"],
-                                      style: AppWidget.semiBoldTextFieldStyle(),
+                                    SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(60),
+                                        child: Image.network(ds["image"],
+                                            height: 90,
+                                            width: 90,
+                                            fit: BoxFit.cover)),
+                                    SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ds["name"],
+                                          style: AppWidget
+                                              .semiBoldTextFieldStyle(),
+                                        ),
+                                        Text(
+                                          "\€" + ds["total"],
+                                          style: AppWidget
+                                              .semiBoldTextFieldStyle(),
+                                        )
+                                      ],
                                     )
                                   ],
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await DatabaseMethods()
+                                        .removeCartItem(userUid!, ds.id);
+                                    setState(() {});
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Colors.red,
+                                        content: Text(
+                                          "Item removed from cart.",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child:
+                                        Icon(Icons.delete, color: Colors.white),
+                                  ),
                                 )
                               ],
                             )),
