@@ -128,21 +128,24 @@ class _AdminHomeState extends State<AdminHome> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
+                                  GestureDetector(
+                                    onTap: () {
                                       _showDeleteConfirmationDialog(
                                           context, ds.id, ds["name"]);
                                     },
-                                    icon: Icon(Icons.delete,
-                                        size: 18, color: Colors.grey),
-                                    tooltip: 'Delete Item',
-                                    padding: EdgeInsets.zero,
-                                    constraints: BoxConstraints(),
+                                    child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Icon(Icons.delete, color: Colors.white),
+                                    ),
                                   ),
-                                  SizedBox(
-                                      height: 8.0), // Spacing between icons
-                                  IconButton(
-                                    onPressed: () {
+                                  SizedBox(height: 8.0), // Spacing between buttons
+                                  GestureDetector(
+                                    onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -152,11 +155,15 @@ class _AdminHomeState extends State<AdminHome> {
                                         ),
                                       );
                                     },
-                                    icon: Icon(Icons.edit_document,
-                                        size: 18, color: Colors.grey),
-                                    tooltip: 'Edit Item',
-                                    padding: EdgeInsets.zero,
-                                    constraints: BoxConstraints(),
+                                    child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Icon(Icons.edit, color: Colors.white),
+                                    ),
                                   ),
                                 ],
                               ),
