@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rvir_projekt/admin/adminLogin.dart';
 import 'package:rvir_projekt/pages/bottomnav.dart';
 import 'package:rvir_projekt/pages/forgotPassword.dart';
 import 'package:rvir_projekt/pages/signup.dart';
@@ -84,6 +85,7 @@ class _LogInState extends State<LogIn> {
                         topRight: Radius.circular(20))),
                 child: Text(""),
               ),
+               
               Container(
                 margin: EdgeInsets.only(top: 1, left: 20.0, right: 20.0),
                 child: Column(
@@ -211,7 +213,7 @@ class _LogInState extends State<LogIn> {
                       ),
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 30,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -219,6 +221,17 @@ class _LogInState extends State<LogIn> {
                             MaterialPageRoute(builder: (context) => Signup()));
                       },
                       child: Text("Don't have an account? Sign up!",
+                          style: AppWidget.lightTextFieldStyle()),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => AdminLogin()));
+                      },
+                      child: Text("Or login as admin!",
                           style: AppWidget.lightTextFieldStyle()),
                     )
                   ],
