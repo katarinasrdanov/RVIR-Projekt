@@ -79,47 +79,78 @@ class _OrderState extends State<Order> {
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 255, 242, 222),
                                 borderRadius: BorderRadius.circular(10)),
                             padding: EdgeInsets.all(10),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  height: 90,
-                                  width: 30,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(child: Text(ds["quantity"])),
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: Image.network(ds["image"],
-                                        height: 90,
-                                        width: 90,
-                                        fit: BoxFit.cover)),
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                Column(
+                                Row(
                                   children: [
                                     Container(
-                                      width:
-                                          MediaQuery.of(context).size.width / 3,
-                                      child: Text(
-                                        ds["name"],
-                                        style:
-                                            AppWidget.semiBoldTextFieldStyle(),
-                                      ),
+                                      height: 90,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child:
+                                          Center(child: Text(ds["quantity"])),
                                     ),
-                                    Text(
-                                      "\€" + ds["total"],
-                                      style: AppWidget.semiBoldTextFieldStyle(),
+                                    SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(60),
+                                        child: Image.network(ds["image"],
+                                            height: 90,
+                                            width: 90,
+                                            fit: BoxFit.cover)),
+                                    SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ds["name"],
+                                          style: AppWidget
+                                              .semiBoldTextFieldStyle(),
+                                        ),
+                                        Text(
+                                          "\€" + ds["total"],
+                                          style: AppWidget
+                                              .semiBoldTextFieldStyle(),
+                                        )
+                                      ],
                                     )
                                   ],
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await DatabaseMethods()
+                                        .removeCartItem(userUid!, ds.id);
+                                    setState(() {});
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Colors.red,
+                                        content: Text(
+                                          "Item removed from cart.",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child:
+                                        Icon(Icons.delete, color: Colors.white),
+                                  ),
                                 )
                               ],
                             )),
@@ -184,31 +215,188 @@ class _OrderState extends State<Order> {
             ),
             GestureDetector(
               onTap: () async {
-                if (amount2 < int.parse(wallet!) && amount2 != 0) {
-                  int amount = int.parse(wallet!) - amount2;
-                  await DatabaseMethods()
-                      .updateWallet(userUid!, amount.toString());
-                  await DatabaseMethods().deleteUserOrderCollection(userUid!);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.green,
-                    content: Text(
-                      "Order placed successfully!",
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                  ));
-                } else if (amount2 == 0) {
+                if (amount2 != 0) {
+                  List<Map<String, dynamic>> addresses =
+                      await DatabaseMethods().getUserAddresses(userUid!);
+                  if (addresses.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(
+                        "No addresses found. Please add an address before proceeding.",
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
+                    ));
+                    return;
+                  }
+
+                  String? selectedAddressId;
+
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 242, 222),
+                        title: Text(
+                          'Select Address',
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        content: SizedBox(
+                          width: 400,
+                          height: 150,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: addresses.map((address) {
+                                return ListTile(
+                                  title: Text(
+                                      '${address['street']} ${address['number']}'),
+                                  subtitle: Text(
+                                      '${address['zipCode']}, ${address['city']}'),
+                                  onTap: () async {
+                                    selectedAddressId = address['id'];
+                                    Navigator.pop(context);
+
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 255, 242, 222),
+                                          title: Text(
+                                            'Payment Method',
+                                            style: TextStyle(
+                                              fontSize: 22.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              ListTile(
+                                                title: Text('Pay by Wallet'),
+                                                leading: Icon(Icons
+                                                    .account_balance_wallet),
+                                                onTap: () async {
+                                                  if (amount2 <=
+                                                      int.parse(wallet!)) {
+                                                    int newWalletAmount =
+                                                        int.parse(wallet!) -
+                                                            amount2;
+                                                    await DatabaseMethods()
+                                                        .updateWallet(
+                                                            userUid!,
+                                                            newWalletAmount
+                                                                .toString());
+                                                    await DatabaseMethods()
+                                                        .deleteUserOrderCollection(
+                                                            userUid!);
+
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      content: Text(
+                                                        "Order placed successfully!",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ));
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      content: Text(
+                                                        "Insufficient amount in the wallet!",
+                                                        style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ));
+                                                  }
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              ListTile(
+                                                title: Text('Cash on Delivery'),
+                                                leading: Icon(Icons.money),
+                                                onTap: () async {
+                                                  await DatabaseMethods()
+                                                      .deleteUserOrderCollection(
+                                                          userUid!);
+
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    content: Text(
+                                                      "Order placed successfully!",
+                                                      style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ));
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  // If no address is selected, stop the checkout process
+                  if (selectedAddressId == null) {
+                    return;
+                  }
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Colors.yellow,
                     content: Text(
                       "The cart is empty!",
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                  ));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.red,
-                    content: Text(
-                      "Insufficient amount in the wallet!",
                       style: TextStyle(fontSize: 18.0, color: Colors.white),
                     ),
                   ));

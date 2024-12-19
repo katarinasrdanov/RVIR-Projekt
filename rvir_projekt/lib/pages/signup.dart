@@ -21,6 +21,9 @@ class _SignupState extends State<Signup> {
 
   final _formkey = GlobalKey<FormState>();
 
+  final RegExp emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+  final RegExp phoneRegex = RegExp(r'^[0-9]+$');
+
   registration() async {
     if (password.isNotEmpty) {
       try {
@@ -73,6 +76,31 @@ class _SignupState extends State<Signup> {
         }
       }
     }
+  }
+
+  bool validateEmailAndPhone() {
+    if (!emailRegex.hasMatch(emailController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text(
+          "Invalid email format!",
+          style: TextStyle(fontSize: 18.0, color: Colors.white),
+        ),
+      ));
+      return false;
+    }
+    if (!phoneRegex.hasMatch(phoneController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Text(
+          "Phone number can only contain numbers!",
+          style: TextStyle(fontSize: 18.0, color: Colors.white),
+        ),
+      ));
+      return false;
+    }
+
+    return true;
   }
 
   @override
@@ -211,13 +239,15 @@ class _SignupState extends State<Signup> {
                               GestureDetector(
                                 onTap: () async {
                                   if (_formkey.currentState!.validate()) {
-                                    setState(() {
-                                      email = emailController.text;
-                                      name = nameController.text;
-                                      password = passwordController.text;
-                                      phone = phoneController.text;
-                                    });
-                                    await registration();
+                                    if (validateEmailAndPhone()) {
+                                      setState(() {
+                                        email = emailController.text;
+                                        name = nameController.text;
+                                        password = passwordController.text;
+                                        phone = phoneController.text;
+                                      });
+                                      await registration();
+                                    }
                                   }
                                 },
                                 child: Material(
@@ -244,24 +274,23 @@ class _SignupState extends State<Signup> {
                                 ),
                               ),
                               SizedBox(
-                                  height: 60,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => LogIn()));
-                                  },
-                                  child: Text("Already have an account? Log In!",
-                                      style: AppWidget.lightTextFieldStyle()),
-                                )
+                                height: 60,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LogIn()));
+                                },
+                                child: Text("Already have an account? Log In!",
+                                    style: AppWidget.lightTextFieldStyle()),
+                              )
                             ],
                           ),
-                          
                         ),
                       ),
-                      
                     ),
-                    
                   ],
                 ),
               )

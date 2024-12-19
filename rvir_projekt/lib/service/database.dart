@@ -152,6 +152,15 @@ class DatabaseMethods {
         .add(userInfoMap);
   }
 
+  Future<void> removeCartItem(String userUid, String itemId) async {
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userUid)
+        .collection("order")
+        .doc(itemId)
+        .delete();
+  }
+
   Future<Stream<QuerySnapshot>> getFoodCart(String uid) async {
     return await FirebaseFirestore.instance
         .collection("users")
@@ -176,29 +185,32 @@ class DatabaseMethods {
     }
   }
 
-  Future<void> deleteFoodItem(String id) async{
-    try{
-      DocumentReference foodItemRef = firestore
-          .collection('food')
-          .doc(id);
-      
+  Future<void> deleteFoodItem(String id) async {
+    try {
+      DocumentReference foodItemRef = firestore.collection('food').doc(id);
+
       await foodItemRef.delete();
-    }catch(err){
+    } catch (err) {
       print("Error deleting order collection: $err");
     }
   }
 
-  Future <void> addFoodItem(Map<String, dynamic> itemToAdd) async {
+  Future<void> addFoodItem(Map<String, dynamic> itemToAdd) async {
     try {
-      CollectionReference foodRef =
-          firestore.collection('food');
+      CollectionReference foodRef = firestore.collection('food');
       await foodRef.add(itemToAdd);
     } catch (e) {
       print('Failed to add food item: $e');
       rethrow;
     }
   }
+
+  //edit
+  Future<void> updateFoodItem(
+      String docId, Map<String, dynamic> updatedData) async {
+    return await FirebaseFirestore.instance
+        .collection("food")
+        .doc(docId)
+        .update(updatedData);
+  }
 }
-
-
-  
