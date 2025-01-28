@@ -6,6 +6,12 @@
 
 **Filitriranje hrane po kategorijah** - Uporabniki lahko hrano filtrirajo glede na različne kategorije, na primer sladice, solate ali brze hrane.
 
+**Pregled podrobnosti** - Uporabniki lahko pregledajo podrobnejše informacije o posameznih izdelkih.
+
+**Ocenjevanje izdelkov** - Uporabniki lahko ocenjujejo izdelke.
+
+**Pregled najboljših izdelkov** - Uporabniki lahko pregledajo seznam 5 najboljše ocenjenih izdelkov.
+
 **Placilo sa kartico ali denarjem** - Sistem omogoča plačilo na dva načina: z bančno kartico prek varnega spletnega plačilnega vmesnika kje lahko dodamo denar v denarnik ali z gotovino ob prevzemu hrane.
 
 **Ogled Profila** - Uporabniki imajo dostop do svojega profila, kjer lahko pregledajo osebne podatke. Prav tako lahko uredijo svoje naslove.
