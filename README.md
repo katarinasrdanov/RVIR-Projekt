@@ -1,4 +1,4 @@
-# RVIR-Projekt
+# Foodie
 
 ## Glavne Funkcionalnosti
 
