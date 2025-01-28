@@ -21,3 +21,11 @@
 **Dodajanje artiklov v kosarico** - Uporabniki lahko izberejo željene artikle in jih dodajo v svojo košarico za nadaljnje naročanje in odstranjevanje artiklov.
 
 **Narocanje hrane** - Po zaključku izbire artiklov uporabniki lahko oddajo naročilo. Sistem omogoča izbiro naslova dostave ter način plačanja.
+
+<p align="center">
+  <video width="320" height="240" controls>
+    <source src="./home.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</p>
+
